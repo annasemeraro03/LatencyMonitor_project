@@ -4,7 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django = "==4.2.22"
+djangorestframework = "*"
+pillow = "*"
+plotly = "*"
+weasyprint = "*"
 
 [dev-packages]
 
