@@ -1,0 +1,39 @@
+<nav id="navBar">
+    <div class="logo-name">
+        <span class="logo_name">Latency Monitor</span>
+        <i class="uil uil-bars sidebar-toggle"></i>
+    </div>
+    <div class="menu-items">
+        <ul class="nav-links">
+            <li><a href="{% url 'dashboard:view' %}">
+                <i class="uil uil-estate"></i>
+                <span class="link-name">Dashboard</span>
+            </a></li>
+            <li><a href="{% url 'experiments:list' %}">
+                <i class="uil uil-chart"></i>
+                <span class="link-name">Esperimenti</span>
+            </a></li>
+            <li><a href="{% url 'issues:list' %}">
+                <i class="uil uil-history"></i>
+                <span class="link-name">Segnalazioni</span>
+            </a></li>
+        </ul>
+
+        <ul class="logout-mode">
+            <li><a href="{% url 'users:logout' %}">
+                <i class="uil uil-signout"></i>
+                <span class="link-name">Logout</span>
+            </a></li>
+
+            <li class="mode">
+                <a href="#">
+                    <div class="mode-toggle">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                        <span class="switch"></span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
