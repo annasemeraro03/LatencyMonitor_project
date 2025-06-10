@@ -1,0 +1,126 @@
+#navBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 280px; 
+    padding: 10px 14px;
+    background-color: var(--panel-color);
+    border-right: 1px solid var(--border-color);
+    transition: var(--tran-05);
+}
+
+#navBar.close {
+    width: 73px; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 10px 4px 10px 14px;
+    background-color: var(--panel-color);
+    border-right: 1px solid var(--border-color);
+    transition: width 0.5s ease;
+}
+
+#navBar.close .logo_name {
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#navBar.close .mode-toggle {
+    justify-content: flex-start;
+    padding-left: 0;
+}
+
+#navBar.close .mode-toggle .link-name,
+#navBar.close .mode-toggle i {
+    display: none;
+}
+
+#navBar.close .link-name {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#navBar.close .mode-toggle .switch {
+    margin-left: 4px;
+}
+
+#navBar.close .sidebar-toggle {
+    left: 4px;
+}
+
+.logo-name {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    height: 50px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: var(--tran-05);
+    margin-left: 0;
+}
+
+.logo_name {
+    margin-left: 14px;
+    transition: var(--tran-05);
+}
+
+.menu-items {
+    margin-top: 40px;
+    height: calc(100% - 90px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.menu-items li {
+    list-style: none;
+}
+
+.menu-items li a {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    text-decoration: none;
+}
+
+.menu-items li a i {
+    font-size: 24px;
+    min-width: 45px;
+    color: var(--black-light-color);
+}
+
+.link-name {
+    font-size: 18px;
+    color: var(--black-light-color);
+    transition: var(--tran-05);
+}
+
+.logout-mode {
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.sidebar-toggle {
+    font-size: 20px;
+    color: var(--black-light-color);
+    cursor: pointer;
+    background-color: var(--panel-color);
+    border-radius: 20px;
+    padding: 4px 8px; 
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: 2px solid var(--toogle-border-color);
+    height: 32px;
+    width: 32px;
+    right: 0px;
+    top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
