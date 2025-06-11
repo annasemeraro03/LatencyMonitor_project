@@ -1,0 +1,115 @@
+/* profile.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-container {
+  width: 600px;
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: black;
+}
+
+.profile-form .form-group {
+  margin-bottom: 18px;
+}
+
+.profile-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: black;
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form input[type="date"],
+.profile-form input[type="file"],
+.profile-form input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.profile-form input[type="text"]:focus,
+.profile-form input[type="email"]:focus,
+.profile-form input[type="date"]:focus,
+.profile-form input[type="file"]:focus,
+.profile-form input[type="password"]:focus {
+  border-color: #0E4BF1;
+  outline: none;
+}
+
+.help-text {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.error {
+  font-size: 13px;
+  color: #d9534f;
+  margin-top: 4px;
+}
+
+.btn-submit {
+  background-color: #0E4BF1;
+  color: white;
+  font-weight: 600;
+  border: none;
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  color: #0E4BF1;
+  background-color: white;
+  border: 1px solid #0E4BF1;
+}
+
+.back-to-home {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.back-to-home a {
+  color: #0E4BF1;
+  text-decoration: none; /* no underline by default */
+  font-size: 16px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.back-to-home a:hover {
+  color: #0E4BF1;
+  text-decoration: underline; /* underline on hover */
+}
+
+.back-to-home .arrow {
+  margin-right: 6px;
+  font-size: 18px;
+}
