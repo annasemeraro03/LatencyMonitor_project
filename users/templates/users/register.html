@@ -1,6 +1,67 @@
-<h2>Registrazione</h2>
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Registrati</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrazione</title>
+  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+  <script defer src="{% static 'js/register.js' %}"></script>
+</head>
+<body>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Registrazione</h2>
+    
+    {% if form.errors %}
+      <div class="errors" style="color: red; margin-bottom: 1em;">
+        <ul>
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li>{{ field.label }}: {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <p>
+      <label for="id_username">Username</label>
+      {{ form.username }}
+    </p>
+
+    <p>
+      <label for="id_email">Email</label>
+      {{ form.email }}
+    </p>
+
+    <p>
+      <label for="id_password1">Password</label>
+      {{ form.password1 }}
+    </p>
+
+    <p>
+      <label for="id_password2">Conferma Password</label>
+      {{ form.password2 }}
+    </p>
+
+    <button type="submit" class="registration">Registrati</button>
+
+    <br><br>
+
+    <div class="back-to-login">
+      <a href="{% url 'users:login' %}">← Login</a>
+    </div>
+  </form>
+
+  <div id="confirmModal" class="modal" style="display: none;" data-show="{{ registration_sent|yesno:'1,0' }}">
+    <div class="modal-content">
+      <p>Richiesta di registrazione inviata all'amministratore.</p>
+      <button id="modalHomeBtn">Torna alla Home</button>
+    </div>
+  </div>
+
+</body>
+</html>

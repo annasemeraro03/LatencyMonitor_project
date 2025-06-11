@@ -1,6 +1,36 @@
-<h2>Profilo</h2>
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Aggiorna profilo</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profilo utente</title>
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+</head>
+<body>
+  <div class="profile-container">
+    <h2>Profilo</h2>
+    <form method="POST" enctype="multipart/form-data" class="profile-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}
+            <small class="help-text">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+            <p class="error">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn-submit">Aggiorna profilo</button>
+    </form>
+    <div class="back-to-home">
+      <a href="{% url 'core:home' %}">← Home</a>
+    </div>
+  </div>
+  
+</body>
+</html>
