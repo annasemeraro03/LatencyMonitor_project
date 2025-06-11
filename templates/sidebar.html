@@ -20,10 +20,31 @@
         </ul>
 
         <ul class="logout-mode">
-            <li><a href="{% url 'users:logout' %}">
-                <i class="uil uil-signout"></i>
-                <span class="link-name">Logout</span>
-            </a></li>
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'users:profile' %}">
+                        <i class="uil uil-user"></i>
+                        <span class="link-name">Profilo</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'users:logout' %}">
+                        <i class="uil uil-signout"></i>
+                        <span class="link-name">Logout</span>
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'users:login' %}">
+                        <i class="uil uil-signin"></i>
+                        <span class="link-name">Login</span>
+                    </a>
+                </li>
+            {% endif %}
+
 
             <li class="mode">
                 <a href="#">
