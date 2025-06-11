@@ -77,4 +77,5 @@ body {
 
 h2 {
     color: var(--h2-color);
+    margin-bottom: 2px !important;
 }
