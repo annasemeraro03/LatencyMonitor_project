@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="approval-container">
+    <section class="approval-header">
+        <h2>Utenti in attesa di approvazione</h2>
+    </section>
+    <br>
+    <div class="card-container">
+        {% if pending_users %}
+            {% for user in pending_users %}
+            <div class="user-card">
+                <h3>{{ user.username }}</h3>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <a href="#" class="details-btn" data-user-id="{{ user.id }}">Vedi dettagli</a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-users-message">Non ci sono users in attesa di approvazione.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="userModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h3>Dettagli utente</h3>
+        <div id="modalBody">
+            <p><strong>Username:</strong> <span id="modal-username"></span></p>
+            <p><strong>Email:</strong> <span id="modal-email"></span></p>
+            <input type="hidden" id="modal-user-id" value="">
+        </div>
+        <div class="modal-actions">
+            <button id="approveBtn" class="btn btn-success">Approva</button>
+            <button id="rejectBtn" class="btn btn-danger">Rifiuta</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
