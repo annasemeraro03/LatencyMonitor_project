@@ -13,16 +13,18 @@
                 <i class="uil uil-chart"></i>
                 <span class="link-name">Esperimenti</span>
             </a></li>
-            <li><a href="{% url 'issues:list' %}">
-                <i class="uil uil-exclamation-triangle"></i>
-                <span class="link-name">Segnalazioni</span>
-            </a></li>
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'issues:list' %}">
+                    <i class="uil uil-exclamation-triangle"></i>
+                    <span class="link-name">Segnalazioni</span>
+                </a></li>
+            {% endif %}
             {% if request.user.is_superuser %}
-                <li><a href="{% url 'users:' %}">
+                <li><a href="{% url 'admin:users_approval' %}">
                     <i class="uil uil-users-alt"></i>
                     <span class="link-name">Approvazione utenti</span>
                 </a></li>
-                <li><a href="{% url 'users:' %}">
+                <li><a href="{% url 'dashboard:statistics' %}">
                     <i class="uil uil-chart-line"></i>
                     <span class="link-name">Statistiche</span>
                 </a></li>

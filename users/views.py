@@ -53,16 +53,3 @@ class ProfileView(View):
             form.save()
             return redirect('users:profile')
         return render(request, 'users/profile.html', {'form': form})
-
-class AdminLoginView(View):
-    def get(self, request):
-        return render(request, 'users/login.html', {'is_admin': True})
-    
-    def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user and user.is_superuser:
-            login(request, user)
-            return redirect('core:home')
-        return render(request, 'users/login.html', {'error': 'Credenziali non valide.', 'is_admin': True})
