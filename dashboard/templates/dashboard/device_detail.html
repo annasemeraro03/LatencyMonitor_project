@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Contenitore centrale con larghezza massima -->
+<div class="max-w-screen-md mx-auto px-4 py-6">
+    
+    <!-- Titolo in alto, senza spazio eccessivo -->
+    <h2 class="text-2xl font-bold text-center mb-6">Dettaglio Dispositivo</h2>
+
+    <!-- Box con i dettagli del dispositivo -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+        <p><strong>Brand:</strong> {{ device.brand }}</p>
+        <p><strong>Modello:</strong> {{ device.model }}</p>
+    </div>
+
+    <!-- Esperimenti associati -->
+    <h3 class="text-xl font-semibold mb-4">Esperimenti Associati</h3>
+    {% if experiments %}
+        <div class="flex flex-col gap-6">
+            {% for experiment in experiments %}
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:ring-2 hover:ring-blue-500 transition">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-1">Esperimento #{{ experiment.id }}</h4>
+                            <p class="text-sm text-gray-500">Creato il {{ experiment.created_at|date:"d/m/Y H:i" }}</p>
+                        </div>
+                    </div>
+                    {% if experiment.id in chart_data %}
+                        <div class="mt-4" style="height: 250px;">
+                            <canvas id="chart-{{ experiment.id }}"></canvas>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-600 dark:text-gray-300">Nessun esperimento disponibile per questo dispositivo.</p>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof renderExperimentCharts === 'function') {
+            const experimentChartData = {{ chart_data_json|safe }};
+            renderExperimentCharts(experimentChartData);
+        }
+    });
+</script>
+{% endblock %}

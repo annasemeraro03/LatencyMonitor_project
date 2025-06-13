@@ -1,14 +1,76 @@
 {% extends 'base.html' %}
-
-{% block title %}Dashboard - Latency Monitor{% endblock %}
+{% load static %}
 
 {% block content %}
-<div class="view-container">
-    <section class="view-header">
-        <h2> Dashboard </h2>
+<div class="max-w-screen-xl mx-auto px-4 py-8">
+
+    <!-- Titolo principale -->
+    <section class="mb-10">
+        <h2 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white">Dispositivi Monitorati</h2>
     </section>
-    <div>
+
+    <!-- Sezione Grafici -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- Grafico a torta -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Distribuzione per Brand</h3>
+            <div style="height: 350px;">
+                <canvas id="brandPieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Placeholder per altri grafici (es. temporali) -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Grafico Temporale</h3>
+            <div style="height: 350px;">
+                <canvas id="timeChart"></canvas>  <!-- Aggiungi i dati nel JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabella dei dispositivi -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold mb-6">Elenco Dispositivi</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto border border-gray-300 dark:border-gray-700">
+                <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 uppercase text-xs tracking-wider">
+                    <tr>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-3">Brand</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-3">Modello</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-3">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-900 dark:text-gray-100">
+                    {% for device in devices %}
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 border-t border-gray-300 dark:border-gray-700">
+                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-medium">{{ device.brand }}</td>
+                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">{{ device.model }}</td>
+                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">
+                            <a href="{% url 'dashboard:device_detail' device.id %}" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">Dettagli</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center py-6 text-gray-500 dark:text-gray-300">Nessun dispositivo disponibile</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
+<!-- Script per i grafici -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof renderBrandPieChart === 'function') {
+            renderBrandPieChart({{ brand_labels|safe }}, {{ brand_counts|safe }});
+        }
+
+        // Esempio: se vuoi gestire anche un grafico temporale
+        if (typeof renderTimeChart === 'function' && window.timeChartData) {
+            renderTimeChart(window.timeChartData);
+        }
+    });
+</script>
 {% endblock %}

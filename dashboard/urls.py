@@ -1,9 +1,9 @@
 from django.urls import path
-from . import views
+from .views import DashboardView, DeviceDetailView
 
-app_name = 'dashboard' 
+app_name = 'dashboard'
 
 urlpatterns = [
-    path('', views.view, name='view'),
-    path('statistics', views.statistics, name='statistics'),
+    path('', DashboardView.as_view(), name='view'),
+    path('device/<int:pk>/', DeviceDetailView.as_view(), name='device_detail'),
 ]
