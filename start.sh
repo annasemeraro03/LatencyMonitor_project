@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # remove old migrations and database
-rm -f db.sqlite3
-find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-find . -path "*/migrations/*.pyc" -delete
+# rm -f db.sqlite3
+# find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+# find . -path "*/migrations/*.pyc" -delete
 
 # create new migrations and database
 python manage.py makemigrations users

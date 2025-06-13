@@ -3,5 +3,3 @@ djangorestframework
 pillow
 plotly
 weasyprint
-django-crispy-forms
-crispy-bootstrap5
