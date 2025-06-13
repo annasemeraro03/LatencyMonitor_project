@@ -1,14 +1,39 @@
 {% extends 'base.html' %}
 
-{% block title %}Experiments - Latency Monitor{% endblock %}
-
 {% block content %}
-<div class="view-container">
-    <section class="view-header">
-        <h2> Esperimenti </h2>
-    </section>
-    <div>
-    </div>
-</div>
+    {% if messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                {% for message in messages %}
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ message|escapejs }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
 
+    <h2 class="text-2xl font-bold">Gestione esperimenti</h2>
+    <div class="flex justify-between items-center mb-4">
+        {% if user.is_authenticated %}
+            <form action="{% url 'experiments:create_device' %}" method="GET">
+                <button type="submit" 
+                        title="Inserisci un nuovo device"
+                        class="bg-blue-600 text-white text-xl px-4 py-2 rounded-full hover:bg-blue-700">
+                    <i class="uil uil-mobile-android"></i>+
+                </button>
+            </form>
+
+            <form action="{% url 'experiments:create_experiment' %}" method="GET">
+                <button type="submit" 
+                        title="Inserisci un nuovo esperimento"
+                        class="bg-blue-600 text-white text-xl px-4 py-2 rounded-full hover:bg-blue-700">
+                    <i class="uil uil-upload"></i>+
+                </button>
+            </form>
+        {% endif %}
+    </div>
 {% endblock %}

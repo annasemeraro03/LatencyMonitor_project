@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-wrapper">
+    <div class="form-card">
+        <h2 class="form-title">Nuovo dispositivo</h2>
+        <br>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Phone - Brand -->
+            <div class="form-group">
+                <label for="{{ form.brand.id_for_label }}">Marca<span class="required">*</span></label>
+                {{ form.brand }}
+                {% if form.brand.errors %}
+                    <p class="error">{{ form.brand.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Phone - Model -->
+            <div class="form-group">
+                <label for="{{ form.model.id_for_label }}">Modello<span class="required">*</span></label>
+                {{ form.model }}
+                {% if form.model.errors %}
+                    <p class="error">{{ form.model.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="submit-container">
+                <button type="submit">Salva Device</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.created|yesno:'1,0' }}">
+    <div class="modal-content">
+        <p>Device creato con successo.</p>
+        <button id="modalHomeBtn">Vai alla lista</button>
+    </div>
+</div>
+{% endblock %}

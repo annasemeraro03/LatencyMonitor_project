@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-wrapper">
+    <div class="form-card">
+        <h2 class="form-title">Nuovo Esperimento</h2>
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <!-- Brand -->
+            <div class="form-group">
+                <label for="id_brand">Marca <span class="required">*</span></label>
+                {{ form.brand }}
+                {% if form.brand.errors %}
+                    <p class="error">{{ form.brand.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Model -->
+            <div class="form-group">
+                <label for="id_model">Modello <span class="required">*</span></label>
+                {{ form.model }}
+                {% if form.model.errors %}
+                    <p class="error">{{ form.model.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Modalità -->
+            <div class="form-group">
+                <label for="{{ form.mode.id_for_label }}">Modalità <span class="required">*</span></label>
+                {{ form.mode }}
+                {% if form.mode.errors %}
+                    <p class="error">{{ form.mode.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Note -->
+            <div class="form-group">
+                <label for="{{ form.notes.id_for_label }}">Note</label>
+                {{ form.notes }}
+                {% if form.notes.errors %}
+                    <p class="error">{{ form.notes.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- File -->
+            <div class="form-group">
+                <label for="{{ form.data_file.id_for_label }}">Carica file (.csv)</label>
+                {{ form.data_file }}
+                {% if form.data_file.errors %}
+                    <p class="error">{{ form.data_file.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="submit-container">
+                <button type="submit">Crea Esperimento</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.created|yesno:'1,0' }}">
+    <div class="modal-content">
+        <p>Esperimento creato con successo.</p>
+        <button id="modalHomeBtn">Vai alla lista</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const brandField = document.querySelector('[name="brand"]');
+    const modelField = document.querySelector('[name="model"]');
+
+    brandField.addEventListener('change', function () {
+        const selectedBrand = this.value;
+        fetch(`/experiments/get-models/?brand=${encodeURIComponent(selectedBrand)}`)
+            .then(response => response.json())
+            .then(data => {
+                modelField.innerHTML = '<option value="">--- Seleziona ---</option>';
+                data.models.forEach(function (model) {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelField.appendChild(option);
+                });
+            });
+    });
+});
+</script>
+{% endblock %}
