@@ -3,10 +3,11 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView
 from django.http import JsonResponse
 from .models import Experiment, Device
-from .forms import ExperimentForm, DeviceForm
+from .forms import ExperimentForm, DeviceForm, ExperimentRemoveForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.views.generic import FormView
 
 @login_required
 def get_models(request):
@@ -16,8 +17,11 @@ def get_models(request):
 
 class ExperimentListView(LoginRequiredMixin, ListView):
     model = Experiment
-    context_object_name = 'experiments'
     template_name = 'experiments/list.html'
+    context_object_name = 'experiments'
+
+    def get_queryset(self):
+        return Experiment.objects.all().select_related('device')
 
 class ExperimentDetailView(LoginRequiredMixin, DetailView):
     model = Experiment
@@ -43,3 +47,16 @@ class DeviceCreateView(LoginRequiredMixin, CreateView):
         self.object = form.save()
         return redirect(f"{self.request.path}?created=1")
 
+class ExperimentRemoveView(LoginRequiredMixin, FormView):
+    template_name = 'experiments/remove_experiment.html'
+    form_class = ExperimentRemoveForm
+    success_url = reverse_lazy('experiments:list')
+
+    def form_valid(self, form):
+        experiments = form.get_selected_experiments()
+        count = experiments.count()
+        
+        if count == 0:
+            messages.warning(self.request, "Nessun esperimento trovato con i criteri selezionati")
+        
+        return redirect(f"{self.request.path}?removed=1")

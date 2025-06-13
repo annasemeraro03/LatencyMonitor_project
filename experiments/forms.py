@@ -1,6 +1,8 @@
 from django import forms
 from .models import Experiment, PhotodiodeData, LatencyData, Device
 import csv
+from django.db.models import Q
+from django.forms.widgets import DateInput
 
 class ExperimentForm(forms.ModelForm):
     brand = forms.ChoiceField(label="Marca", required=True)
@@ -142,3 +144,45 @@ class LatencyDataForm(forms.ModelForm):
     class Meta:
         model = LatencyData
         fields = ['index', 'value', 'timestamp']
+
+class ExperimentRemoveForm(forms.Form):
+    brand = forms.ChoiceField(
+        choices=[],
+        required=True,
+        label="Marca"
+    )
+    model = forms.ChoiceField(
+        choices=[],
+        required=True,
+        label="Modello"
+    )
+    mode = forms.ChoiceField(
+        choices=Experiment.MODE_CHOICES,
+        required=True,
+        label="Modalità"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['brand'].choices = self.get_brand_choices()
+        self.fields['model'].choices = self.get_model_choices()
+
+    def get_brand_choices(self):
+        brands = Device.objects.values_list('brand', flat=True).distinct()
+        return [('', '---')] + [(b, b) for b in brands]
+
+    def get_model_choices(self):
+        models = Device.objects.values_list('model', flat=True).distinct()
+        return [('', '---')] + [(m, m) for m in models]
+
+    def get_selected_experiments(self):
+        # Aggiungi debug per verificare i valori selezionati
+        print(f"Brand selezionato: {self.cleaned_data['brand']}")
+        print(f"Model selezionato: {self.cleaned_data['model']}")
+        print(f"Mode selezionato: {self.cleaned_data['mode']}")
+        
+        return Experiment.objects.filter(
+            device__brand=self.cleaned_data['brand'],
+            device__model=self.cleaned_data['model'],
+            mode=self.cleaned_data['mode']
+        )

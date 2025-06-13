@@ -3,7 +3,7 @@
 {% block content %}
     {% if messages %}
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 {% for message in messages %}
                 Swal.fire({
                     icon: 'success',
@@ -16,24 +16,41 @@
         </script>
     {% endif %}
 
-    <h2 class="text-2xl font-bold">Gestione esperimenti</h2>
-    <div class="flex justify-between items-center mb-4">
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold mb-3">Gestione esperimenti</h2>
+        <br>
         {% if user.is_authenticated %}
-            <form action="{% url 'experiments:create_device' %}" method="GET">
-                <button type="submit" 
-                        title="Inserisci un nuovo device"
-                        class="bg-blue-600 text-white text-xl px-4 py-2 rounded-full hover:bg-blue-700">
-                    <i class="uil uil-mobile-android"></i>+
-                </button>
-            </form>
+            <div class="flex flex-row items-center" style="gap: 12px;"> <!-- FORZO il gap orizzontale -->
+                <!-- Pulsante Device -->
+                <form action="{% url 'experiments:create_device' %}" method="GET" style="display: inline-block; margin: 0;">
+                    <button type="submit"
+                            title="Aggiungi dispositivo"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <i class="uil uil-mobile-android"></i>
+                        <span>+</span>
+                    </button>
+                </form>
+                
+                <!-- Pulsante Esperimento -->
+                <form action="{% url 'experiments:create_experiment' %}" method="GET" style="display: inline-block; margin: 0;">
+                    <button type="submit"
+                            title="Aggiungi esperimento"     
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <i class="uil uil-upload"></i>
+                        <span>+</span>
+                    </button>
+                </form>
 
-            <form action="{% url 'experiments:create_experiment' %}" method="GET">
-                <button type="submit" 
-                        title="Inserisci un nuovo esperimento"
-                        class="bg-blue-600 text-white text-xl px-4 py-2 rounded-full hover:bg-blue-700">
-                    <i class="uil uil-upload"></i>+
-                </button>
-            </form>
+                <form action="{% url 'experiments:remove_experiment' %}" method="POST" style="display: inline-block; margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit"
+                            title="Rimuovi esperimento"
+                            class="bg-red-600 hover:bg-red-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <i class="uil uil-trash-alt"></i>
+                        <span>-</span>
+                    </button>
+                </form>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
