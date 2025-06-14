@@ -1,7 +1,45 @@
-{% extends 'base.html' %}
-
-{% block title %}Home - Latency Monitor{% endblock %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<h2>Benvenuto in Latency Monitor</h2>
+<div class="max-w-screen-xl mx-auto px-4 py-8">
+    <section class="mb-6">
+        <h2 class="text-3xl font-bold mb-6">Home</h2>
+    </section>
+
+    <!-- Container per i grafici affiancati con flex e gap forzato -->
+    <div class="flex flex-row items-stretch" style="gap: 20px;">
+        <!-- Fotodiodo Chart -->
+        <div class="flex-1 bg-white rounded-lg shadow-md p-6">
+            <div class="mb-6 text-center">
+                <h3 class="text-2xl font-bold mb-3">Fotodiodo</h3>
+                <div id="no-data-photodiodo" class="text-red-500 py-2 px-4 bg-red-50 rounded-md">
+                    <p class="flex items-center" id="status-photodiodo">
+                        <i class="uil uil-exclamation-circle mr-2"></i>
+                        <span>Nessun dato disponibile</span>
+                    </p>
+                </div>
+            </div>
+            <div class="relative" style="height: 300px;">
+                <canvas id="photodiodoChart"></canvas>
+            </div>
+        </div>
+        <br>
+        <!-- Latenza Chart -->
+        <div class="flex-1 bg-white rounded-lg shadow-md p-6">
+            <div class="mb-6 text-center">
+                <h3 class="text-2xl font-bold mb-3">Latenza (µs)</h3>
+                <div id="no-data-latenza" class="text-red-500 py-2 px-4 bg-red-50 rounded-md">
+                    <p class="flex items-center" id="status-latenza">
+                        <i class="uil uil-exclamation-circle mr-2"></i>
+                        <span>Nessun dato disponibile</span>
+                    </p>
+                </div>
+            </div>
+            <div class="relative" style="height: 300px;">
+                <canvas id="latenzaChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

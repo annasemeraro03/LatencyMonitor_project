@@ -9,6 +9,7 @@ djangorestframework = "*"
 pillow = "*"
 plotly = "*"
 weasyprint = "*"
+paho-mqtt = "*"
 
 [dev-packages]
 
