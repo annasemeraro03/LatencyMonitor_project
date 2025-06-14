@@ -1,0 +1,63 @@
+.stats-wrapper {
+  width: 100%;
+  max-width: 900px; /* o la larghezza che preferisci */
+  margin: 0;
+  padding: 20px;
+}
+
+.cards-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  flex-wrap: nowrap; /* evita che le card vadano a capo */
+  justify-content: flex-start; /* allinea a sinistra */
+  align-items: flex-start;
+}
+
+.card-widget {
+  flex: 1 1 400px; /* larghezza base di 300px e flessibile */
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+  padding: 25px 30px;
+  border-radius: 12px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  text-align: center;
+  min-width: 400px; /* non diventano troppo strette */
+}
+
+
+.card-widget h3 {
+  margin: 0 0 12px 0;
+  font-weight: 50;
+  font-size: 1.3rem;
+}
+
+.login-number {
+  font-size: 3rem;
+  font-weight: 50;
+  letter-spacing: 1.5px;
+}
+
+.login-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 700px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.login-table thead {
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+}
+
+.login-table th, .login-table td {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.login-table tbody tr:nth-child(even) {
+  background-color: #f3f6fb;
+}

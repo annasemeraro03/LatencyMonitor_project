@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const modal = document.getElementById('confirmModal');
-  if (modal && modal.dataset.show === '1') {
-    modal.style.display = 'block';
-
-    document.getElementById('modalHomeBtn').addEventListener('click', () => {
-      window.location.href = '/experiments'; // Cambia con la tua URL di destinazione
-    });
+  // Gestione modal conferma creazione
+  const confirmModal = document.getElementById('confirmModal');
+  if (confirmModal && confirmModal.dataset.show === '1') {
+    confirmModal.style.display = 'block';
   }
+
+  // Gestione pulsanti modali
+  document.querySelectorAll('.modal-content button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      window.location.href = '/experiments'; // Usa la stessa URL per entrambi i modali
+    });
+  });
 });

@@ -12,7 +12,7 @@ body.dark {
     --title-icon-color: white;
     --footer-background-color: white;
     --footer-text-color: #000;
-    --toogle-border-color: white
+    --toogle-border-color: white;
 }
 
 .mode-toggle {
