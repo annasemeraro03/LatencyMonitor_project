@@ -4,8 +4,12 @@ from . import views
 app_name = 'issues'
 
 urlpatterns = [
-    path('', views.pending_issues_view, name='list'),  # unica view che mostra tutto
-    path("pending/", views.pending_issues_view, name="pending_issues"),
-    path("approve/<int:issue_id>/", views.approve_issue, name="approve"),
-    path("reject/<int:issue_id>/", views.reject_issue, name="reject"),
+    path('', views.PendingIssuesView.as_view(), name='list'),
+    path('pending/', views.PendingIssuesView.as_view(), name='pending_issues'),
+    path('approve/<int:issue_id>/', views.ApproveIssueView.as_view(), name='approve'),
+    path('reject/<int:issue_id>/', views.RejectIssueView.as_view(), name='reject'),
+    path('create/', views.CreateIssueView.as_view(), name='create_issue'),
+    path('get-models/', views.get_models, name='get_models'),
+    path('get-experiments/', views.get_experiments, name='get_experiments'),
+    path('resolve/<int:issue_id>/', views.ResolveIssueView.as_view(), name='resolve_issue'),
 ]

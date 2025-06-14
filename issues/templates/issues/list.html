@@ -3,15 +3,27 @@
 
 {% block content %}
 <div class="approval-container">
+    <section>
+        <h2>Operazioni disponibili</h2>
+    </section>
+    <br>
+    <form action="{% url 'issues:create_issue' %}" method="GET" style="display: inline-block; margin: 0;">
+        <button type="submit"
+                title="Fai una segnalazione"
+                class="bg-red-600 hover:bg-red-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+            <i class="uil uil-chart"></i>
+            <span>+</span>
+        </button>
+    </form>
+
+    <br><br>
+
     <section class="approval-header">
         {% if request.user.is_superuser %}
             <h2>Issues in attesa di revisione</h2>
-        {% else %}
-            <h2>Le mie segnalazioni</h2>
         {% endif %}
     </section>
     <br>
-
     {% if request.user.is_superuser %}
         <div class="card-container">
             {% if pending_issues %}
@@ -39,35 +51,76 @@
                     <input type="hidden" id="modal-issue-id" value="">
                 </div>
                 <div class="modal-actions">
-                    <button id="approveIssueBtn" class="btn btn-success">Approva</button>
-                    <button id="rejectIssueBtn" class="btn btn-danger">Rifiuta</button>
+                    <button type="button" id="approveIssueBtn" class="btn btn-success">Approva</button>
+                    <button type="button" id="rejectIssueBtn" class="btn btn-danger">Rifiuta</button>
                 </div>
             </div>
         </div>
-
-    {% else %}
-        <div class="card-container">
-            {% if issues %}
-                {% for issue in issues %}
-                <div class="user-card">
-                    <h3>{{ issue.title }}</h3>
-                    <p><strong>Data:</strong> {{ issue.created_at }}</p>
-                    <p><strong>Stato:</strong>
-                        {% if issue.status == 'pending' %}
-                            <span style="color: orange;">In attesa</span>
-                        {% elif issue.status == 'approved' %}
-                            <span style="color: green;">Approvata</span>
-                        {% else %}
-                            <span style="color: red;">Rifiutata</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Descrizione:</strong> {{ issue.description }}</p>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p class="no-users-message">Non hai ancora inviato segnalazioni.</p>
-            {% endif %}
-        </div>
     {% endif %}
+    <br><br>
+    <section>
+        <h2>Le mie segnalazioni</h2>
+    </section>
+    <br>
+    <div class="card-container">
+        {% if issues %}
+            {% for issue in issues %}
+            <div class="user-card">
+                <h3>{{ issue.title }}</h3>
+                <p><strong>Data:</strong> {{ issue.created_at }}</p>
+                <p><strong>Stato:</strong>
+                    {% if issue.status == 'pending' %}
+                        <span style="color: orange;">In attesa</span>
+                    {% elif issue.status == 'approved' %}
+                        <span style="color: green;">Approvata</span>
+                    {% else %}
+                        <span style="color: red;">Rifiutata</span>
+                    {% endif %}
+                </p>
+                <p><strong>Descrizione:</strong> {{ issue.description }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-users-message">Non hai ancora inviato segnalazioni.</p>
+        {% endif %}
+    </div>
+    
+    <section class="approval-header" style="margin-top: 3rem;">
+        <h2>Issue approvate da risolvere</h2>
+    </section>
+    <br>
+    <div class="card-container">
+        {% if approved_open_issues %}
+            {% for issue in approved_open_issues %}
+            <div class="user-card" data-issue-id="{{ issue.id }}">
+                <h3 class="issue-title">{{ issue.title }}</h3>
+                <p class="issue-reported-by"><strong>Segnalato da:</strong> {{ issue.reported_by.username }}</p>
+                <p class="issue-description"><strong>Descrizione:</strong> {{ issue.description }}</p>
+                <p class="issue-experiment"><strong>Esperimento:</strong> {{ issue.experiment }}</p>
+                <a href="#" class="details-btn2" data-issue-id="{{ issue.id }}" role="button">Vedi dettagli</a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-users-message">Non ci sono issue approvate da risolvere.</p>
+        {% endif %}
+    </div>
+
+    <div id="approvedIssueModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" id="closeApprovedIssueModal">&times;</span>
+            <h3>Dettagli Issue Approvata</h3>
+            <div id="approvedIssueModalBody">
+                <p><strong>Titolo:</strong> <span id="approved-modal-title"></span></p>
+                <p><strong>Descrizione:</strong> <span id="approved-modal-description"></span></p>
+                <p><strong>Esperimento:</strong> <span id="approved-modal-experiment"></span></p>
+                <p><strong>Stato risoluzione:</strong> <span id="approved-modal-resolved"></span></p>
+                <input type="hidden" id="approved-modal-issue-id" value="">
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="resolveIssueBtn" class="btn btn-success">Segna come Risolta</button>
+                <button type="button" id="cancelResolveIssueBtn" class="btn btn-secondary">Annulla</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
