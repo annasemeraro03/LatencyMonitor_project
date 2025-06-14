@@ -1,14 +1,51 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}Statistics - Latency Monitor{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/analytics.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="view-container">
-    <section class="view-header">
-        <h2> Statistiche </h2>
-    </section>
-    <div>
-    </div>
-</div>
+<div class="stats-wrapper">
 
+    <div class="cards-row">
+      <div class="card-widget">
+          <h3>Login giornalieri:</h3>
+          <p class="login-number">{{ total_today }}</p>
+      </div>
+
+      <div class="card-widget">
+          <h3>Login giornalieri (senza admin):</h3>
+          <p class="login-number">{{ total_today_no_admin }}</p>
+      </div>
+
+      <div class="card-widget">
+          <h3>Issue risolte oggi:</h3>
+          <p class="login-number">{{ resolved_today }}</p>
+      </div>
+    </div>
+
+    <h2>Login ultimi 3 giorni</h2>
+    <table class="login-table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Numero login totali</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in login_stats %}
+            <tr>
+                <td>{{ entry.day }}</td>
+                <td>{{ entry.count }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">Nessun dato disponibile</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
 {% endblock %}

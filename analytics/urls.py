@@ -1,8 +1,8 @@
 from django.urls import path
-from . import views
+from .views import LoginStatsView
 
-app_name = 'analytics' 
+app_name = 'analytics'
 
 urlpatterns = [
-    path('', views.list, name='list'),
+    path('', LoginStatsView.as_view(), name='list'),
 ]
