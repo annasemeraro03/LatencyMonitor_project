@@ -13,11 +13,12 @@
                 <i class="uil uil-dashboard"></i>
                 <span class="link-name">Dashboard</span>
             </a></li>
-            <li><a href="{% url 'experiments:list' %}">
-                <i class="uil uil-chart"></i>
-                <span class="link-name">Esperimenti</span>
-            </a></li>
+            
             {% if request.user.is_authenticated %}
+                <li><a href="{% url 'experiments:list' %}">
+                    <i class="uil uil-chart"></i>
+                    <span class="link-name">Esperimenti</span>
+                </a></li>
                 <li><a href="{% url 'issues:list' %}">
                     <i class="uil uil-exclamation-triangle"></i>
                     <span class="link-name">Segnalazioni</span>
