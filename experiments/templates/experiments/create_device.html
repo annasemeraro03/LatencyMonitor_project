@@ -4,6 +4,12 @@
     <div class="form-card">
         <h2 class="form-title">Nuovo dispositivo</h2>
         <br>
+        {% if message %}
+            <div class="alert alert-warning" style="color: red;">
+                Dispositivo già presente nel database!
+            </div>
+        {% endif %}
+        <br>
         <form method="post" novalidate>
             {% csrf_token %}
 

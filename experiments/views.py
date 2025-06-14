@@ -3,11 +3,12 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView
 from django.http import JsonResponse
 from .models import Experiment, Device
-from .forms import ExperimentForm, DeviceForm, ExperimentRemoveForm
+from .forms import ExperimentForm, ExperimentRemoveForm, DeviceForm, PhotodiodeDataForm, LatencyDataForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.views.generic import FormView
+from django.shortcuts import render
 
 @login_required
 def get_models(request):
@@ -44,6 +45,12 @@ class DeviceCreateView(LoginRequiredMixin, CreateView):
     template_name = 'experiments/create_device.html'
 
     def form_valid(self, form):
+        brand = form.cleaned_data['brand']
+        model = form.cleaned_data['model']
+        
+        if Device.objects.filter(brand__iexact=brand.strip(), model__iexact=model.strip()).exists():
+            return render(self.request, self.template_name, {"form": form, "message": "Dispositivo già presente nel database"})
+        
         self.object = form.save()
         return redirect(f"{self.request.path}?created=1")
 
@@ -58,5 +65,7 @@ class ExperimentRemoveView(LoginRequiredMixin, FormView):
         
         if count == 0:
             messages.warning(self.request, "Nessun esperimento trovato con i criteri selezionati")
+        else:
+            experiments.delete()
         
         return redirect(f"{self.request.path}?removed=1")

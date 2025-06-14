@@ -114,16 +114,13 @@ class DeviceForm(forms.ModelForm):
         cleaned_data = super().clean()
         brand = cleaned_data.get('brand')
         model = cleaned_data.get('model')
-
+        
         if brand and model:
-            exists = Device.objects.filter(
-                brand__iexact=brand.strip(),
-                model__iexact=model.strip()
-            ).exists()
-            if exists:
-                raise forms.ValidationError("Un device con questa marca e modello esiste già.")
-
+            cleaned_data['brand'] = brand.strip()
+            cleaned_data['model'] = model.strip()
+            
         return cleaned_data
+
 
     def save(self, commit=True):
         instance = super().save(commit=False)
