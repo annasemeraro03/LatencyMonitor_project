@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'admin/css/users_approval.css' %}">
+    <script defer src="{% static 'admin/js/users_approval.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 <div class="approval-container">

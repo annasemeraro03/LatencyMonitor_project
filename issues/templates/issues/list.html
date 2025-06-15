@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% block head %}
+    <script defer src="{% static 'issues/js/approved_issue.js' %}"></script>
+    <script defer src="{% static 'issues/js/details_issue.js' %}"></script>
+    <script defer src="{% static 'issues/js/modal.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'issues/css/model.css' %}">
+    <link rel="stylesheet" href="{% static 'issues/css/form.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="approval-container">
@@ -97,7 +104,7 @@
                 <p class="issue-reported-by"><strong>Segnalato da:</strong> {{ issue.reported_by.username }}</p>
                 <p class="issue-description"><strong>Descrizione:</strong> {{ issue.description }}</p>
                 <p class="issue-experiment"><strong>Esperimento:</strong> {{ issue.experiment }}</p>
-                <a href="#" class="details-btn2" data-issue-id="{{ issue.id }}" role="button">Vedi dettagli</a>
+                <a href="#" class="details-btn" data-issue-id="{{ issue.id }}" role="button">Vedi dettagli</a>
             </div>
             {% endfor %}
         {% else %}

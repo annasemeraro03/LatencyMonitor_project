@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% block head %}
+    <script defer src="{% static 'core/js/home.js' %}"></script>
+    <script defer src="{% static 'core/js/charts.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 <div class="max-w-screen-xl mx-auto px-4 py-8">

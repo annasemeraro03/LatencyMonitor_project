@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Gestione pulsanti modali
   document.querySelectorAll('.modal-content button').forEach(btn => {
     btn.addEventListener('click', () => {
-      window.location.href = '/experiments'; // Usa la stessa URL per entrambi i modali
+      window.location.href = '/issues/'; // Usa la stessa URL per entrambi i modali
     });
   });
 });

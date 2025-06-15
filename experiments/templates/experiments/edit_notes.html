@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block head %}
+    <script defer src="{% static 'experiments/js/edit_notes.js' %}"></script>
+    <script defer src="{% static 'experiments/js/modal.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
+{% endblock %}
 {% block content %}
-<div class="container mt-5">
+<div class="form-wrapper">
     <div class="form-card">
         <h2 class="form-title">Modifica le note</h2>
         <form method="post">

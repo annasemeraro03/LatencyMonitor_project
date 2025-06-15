@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+APPEND_SLASH = True
 
 # Application definition
 
@@ -44,12 +45,7 @@ INSTALLED_APPS = [
     'dashboard',
     'experiments',
     'analytics',
-    'crispy_forms',
-    'crispy_bootstrap5',
 ]
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

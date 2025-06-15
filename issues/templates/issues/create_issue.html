@@ -1,5 +1,11 @@
 {% extends "base.html" %}
-
+{% load static %}
+{% block head %}
+  <script defer src="{% static 'issues/js/create_issue.js' %}"></script>
+  <script defer src="{% static 'issues/js/modal.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'issues/css/model.css' %}">
+  <link rel="stylesheet" href="{% static 'issues/css/form.css' %}">
+{% endblock %}
 {% block content %}
 <h2>Nuova segnalazione</h2>
 

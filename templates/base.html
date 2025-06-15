@@ -4,23 +4,20 @@
     <meta charset="UTF-8" />
     <title>{% block title %}Latency Monitor{% endblock %}</title>
     
-    <link href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" rel="stylesheet">
     
     {% load static %}
+    {% block head %}
+    {% endblock %}
+    
+    <link href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/darkmode.css' %}" />
     <link rel="stylesheet" href="{% static 'css/header.css' %}" />
     <link rel="stylesheet" href="{% static 'css/sidebar.css' %}" />
     <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/users_approval.css' %}">
-    <link rel="stylesheet" href="{% static 'css/create_deviceExperiments.css' %}">
-    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
-    <link rel="stylesheet" href="{% static 'css/device_table.css' %}">
-    <link rel="stylesheet" href="{% static 'css/analytics.css' %}">
-    <link rel="stylesheet" href="{% static 'css/device_details.css' %}">
-
-
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+    
     <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
@@ -28,16 +25,8 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.2.0"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'js/home.js' %}"></script>
+    
     <script src="{% static 'js/sidebarToggle.js' %}"></script>
-    <script src="{% static 'js/users_approval.js' %}"></script>
-    <script src="{% static 'js/form_modal.js' %}"></script>
-    <script src="{% static 'js/charts.js' %}"></script>
-    <script src="{% static 'js/create_issue.js' %}"></script>
-    <script src="{% static 'js/details_issue.js' %}"></script>
-    <script src="{% static 'js/approved_issue.js' %}"></script>
-    <script src="{% static 'js/edit_notes.js' %}"></script>
-
 </head>
 <body>
     {% include 'sidebar.html' %}
@@ -46,7 +35,6 @@
             {% block content %}{% endblock %}
         </div>
     </section>
-    
     {% include 'footer.html' %}
 </body>
 </html>

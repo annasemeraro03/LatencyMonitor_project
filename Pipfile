@@ -10,8 +10,9 @@ pillow = "*"
 plotly = "*"
 weasyprint = "*"
 paho-mqtt = "*"
+matplotlib = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "*"

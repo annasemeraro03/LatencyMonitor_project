@@ -1,0 +1,120 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.user-card {
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  width: 250px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+}
+
+.details-btn {
+  margin-top: 0.5rem;
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Modal overlay fullscreen, sfondo semi-trasparente */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center; /* centro orizzontale */
+  align-items: center;     /* centro verticale */
+  z-index: 9999;
+}
+
+/* Finestra modale centrata */
+.modal-content {
+  background: white;
+  width: 400px;
+  max-height: 90vh;
+  padding: 20px;
+  border-radius: 6px;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  position: relative;
+  animation: slideInRight 0.3s ease;
+}
+
+/* Pulsante di chiusura */
+.close {
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Animazione slide in da destra */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Container azioni dentro il modal */
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Stile base bottoni */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+/* Bottone verde approva */
+.btn-success {
+  background-color: #28a745;
+  border: 1px solid white;
+}
+
+.btn-success:hover {
+  background-color: white;
+  color: #28a745;
+  border: 1px solid #28a745;
+}
+
+/* Bottone rosso rifiuta */
+.btn-danger {
+  background-color: #dc3545;
+  border: 1px solid white;
+}
+
+.btn-danger:hover {
+  background-color: white;
+  color: #c82333;
+  border: 1px solid #c82333;
+}
