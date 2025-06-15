@@ -64,7 +64,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         if (typeof renderBrandPieChart === 'function') {
-            renderBrandPieChart({{ brand_labels|safe }}, {{ brand_counts|safe }});
+            const labels = JSON.parse('{{ brand_labels|escapejs }}');
+            const counts = JSON.parse('{{ brand_counts|escapejs }}');
+            renderBrandPieChart(labels, counts);
         }
 
         // Esempio: se vuoi gestire anche un grafico temporale

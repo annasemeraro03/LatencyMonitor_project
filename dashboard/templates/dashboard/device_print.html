@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Dettaglio Dispositivo</title>
+    <style>
+        body { font-family: sans-serif; margin: 0px; }
+        h2 { text-align: center; color:blue; }
+        .box { border: 1px solid #ccc; border-radius: 8px; padding: 1em; margin-bottom: 1em; }
+        .chart img { max-width: 100%; height: auto; margin-top: 1em; }
+    </style>
+</head>
+<body>
+    <div style="text-align: right; margin-bottom: 1em;">
+        <p><strong>Report generato il:</strong> {% now "d/m/Y H:i" %}</p>
+    </div>
+    <br>
+    <h2>Dettaglio Dispositivo</h2>
+    <div class="box">
+        <p><strong>Brand:</strong> {{ device.brand }}</p>
+        <p><strong>Modello:</strong> {{ device.model }}</p>
+    </div>
+
+    <h3>Esperimenti Associati</h3>
+    {% if experiments_data %}
+        {% for exp_data in experiments_data %}
+            <div class="box">
+                <h4>Esperimento #{{ exp_data.experiment.id }}</h4>
+                <p>Creato il {{ exp_data.experiment.created_at|date:"d/m/Y H:i" }}</p>
+                <p> Stato: {{ experiment.is_closed|yesno:'concluso, in corso' }} </p>
+                {% if experiment.notes %}
+                    <p> Note: {{ experiment.notes }} </p>
+                {% endif %}
+                {% if exp_data.chart_image %}
+                    <div class="chart">
+                        <img src="data:image/png;base64,{{ exp_data.chart_image }}" alt="Grafico Esperimento #{{ exp_data.experiment.id }}">
+                    </div>
+                {% else %}
+                    <p><em>Nessun grafico disponibile.</em></p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nessun esperimento disponibile.</p>
+    {% endif %}
+</body>
+</html>
