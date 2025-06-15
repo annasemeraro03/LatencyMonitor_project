@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`/issues/${issueId}/resolve/`, {
       method: 'POST',
       headers: {
-        'X-CSRFToken': getCookie('csrftoken'), // funzione getCookie da definire o usare un modo per ottenere CSRF
+        'X-CSRFToken': csrftoken, // funzione getCookie da definire o usare un modo per ottenere CSRF
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ resolved: true }),
@@ -68,11 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) {
           alert('Issue segnata come risolta!');
           approvedIssueModal.style.display = 'none';
+          alert('Issue segnata come risolta!');
           // opzionale: aggiorna la UI per riflettere il cambio di stato
           location.reload(); // o aggiorna solo la card dinamicamente
         } else {
           alert('Errore nel segnalare come risolta.');
-        }
+          console.error(response);}
       })
       .catch(() => {
         alert('Errore di connessione.');

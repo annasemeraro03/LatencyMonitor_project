@@ -105,7 +105,7 @@ function renderExperimentCharts(data) {
                     },
                     y: {
                         beginAtZero: true,
-                        title: { display: true, text: 'Latenza (ms)' }
+                        title: { display: true, text: 'Latenza (µs)' }
                     }
                 }
             }
