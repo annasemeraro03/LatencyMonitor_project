@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="{% static 'experiments/js/experiment_details.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6 bg-white rounded shadow">
+    <h2 class="text-2xl font-bold mb-4">Dettagli Esperimento</h2>
+
+    <div class="mb-6 space-y-1">
+        <br>
+        <p><strong>Dispositivo:</strong> {{ experiment.device.brand }} {{ experiment.device.model }}</p>
+        <p><strong>Modalità:</strong> {{ experiment.get_mode_display }}</p>
+        <p><strong>Creato il:</strong> {{ experiment.created_at|date:"d/m/Y H:i" }}</p>
+        <p><strong>Ultima modifica:</strong> {{ experiment.last_modified_at|date:"d/m/Y H:i" }}</p>
+        <p><strong>Stato:</strong>
+            {% if experiment.is_closed %}
+                <span class="text-red-600 font-medium">Concluso</span>
+            {% else %}
+                <span class="text-green-600 font-medium">In corso</span>
+            {% endif %}
+        </p>
+        <p><strong>Note:</strong> {{ experiment.notes|default:"—" }}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <br>
+        <section>
+            <h3 class="text-lg font-semibold mb-2">Valori Fotodiodo</h3>
+            <canvas id="photodiodeChart" width="400" height="250"></canvas>
+        </section>
+        <br>
+        <section>
+            <h3 class="text-lg font-semibold mb-2">Latenza</h3>
+            <canvas id="latencyChart" width="400" height="250"></canvas>
+        </section>
+    </div>
+</div>
+
+{# Passaggio dati ai JS in modo sicuro con json_script #}
+{{ photodiode_labels|json_script:"photodiode-labels" }}
+{{ photodiode_values|json_script:"photodiode-values" }}
+{{ latency_labels|json_script:"latency-labels" }}
+{{ latency_values|json_script:"latency-values" }}
+
+{% endblock %}

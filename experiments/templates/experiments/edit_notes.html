@@ -4,6 +4,7 @@
     <script defer src="{% static 'experiments/js/edit_notes.js' %}"></script>
     <script defer src="{% static 'experiments/js/modal.js' %}"></script>
     <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'experiments/css/modal.css' %}">
 {% endblock %}
 {% block content %}
 <div class="form-wrapper">
@@ -31,10 +32,10 @@
     </div>
 </div>
 
-<div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.created|yesno:'1,0' }}">
+<div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.modified|yesno:'1,0' }}">
     <div class="modal-content">
         <p>Nota modificata con successo.</p>
-        <button id="modalHomeBtn">Home</button>
+        <button id="modalHomeBtn">Torna alla pagina esperimenti</button>
     </div>
 </div>
 {% endblock %}

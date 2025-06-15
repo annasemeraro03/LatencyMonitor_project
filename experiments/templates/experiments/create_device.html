@@ -2,6 +2,7 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'experiments/css/modal.css' %}">
     <script defer src="{% static 'experiments/js/modal.js' %}"></script> 
 {% endblock %}
 {% block content %}
@@ -46,7 +47,7 @@
 <div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.created|yesno:'1,0' }}">
     <div class="modal-content">
         <p>Device creato con successo.</p>
-        <button id="modalHomeBtn">Vai alla lista</button>
+        <button id="modalHomeBtn">Torna alla pagina esperimenti</button>
     </div>
 </div>
 {% endblock %}

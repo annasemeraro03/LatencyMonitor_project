@@ -2,19 +2,18 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
-    <script defer src="{% static 'experiments/js/modal.js' %}"></script> 
+    <script defer src="{% static 'experiments/js/remove_experiment.js' %}"></script>
 {% endblock %}
+
 {% block content %}
 <div class="form-wrapper">
     <div class="form-card">
-        <h2 class="form-title">Seleziona Esperimenti da Rimuovere</h2>
+        <h2 class="form-title">Rimuovi Esperimenti</h2>
         
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
-            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
-                {{ message }}
-            </div>
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
             {% endfor %}
         </div>
         {% endif %}
@@ -22,26 +21,29 @@
         <form method="post" id="removeForm">
             {% csrf_token %}
             
-            <!-- Brand -->
             <div class="form-group">
-                <label for="id_brand">Marca</label>
+                <label for="{{ form.brand.id_for_label }}">Marca</label>
                 {{ form.brand }}
             </div>
 
-            <!-- Model -->
             <div class="form-group">
-                <label for="id_model">Modello</label>
+                <label for="{{ form.model.id_for_label }}">Modello</label>
                 {{ form.model }}
             </div>
 
-            <!-- Modalità -->
             <div class="form-group">
-                <label for="id_mode">Modalità</label>
+                <label for="{{ form.mode.id_for_label }}">Modalità</label>
                 {{ form.mode }}
             </div>
 
+            <div class="form-group">
+                <label for="{{ form.experiment.id_for_label }}">Esperimento (facoltativo)</label>
+                {{ form.experiment }}
+                <small class="text-muted">Se selezioni un esperimento specifico, solo quello verrà eliminato.</small>
+            </div>
+
             <div class="submit-container">
-                <button type="submit" class="red-delete-button" onclick="return confirm('Sei sicuro di voler eliminare tutti gli esperimenti che corrispondono a questi criteri?')">
+                <button type="submit" class="red-delete-button" onclick="return confirm('Sei sicuro di voler eliminare gli esperimenti selezionati?')">
                     Rimuovi Esperimenti
                 </button>
                 <a href="{% url 'experiments:list' %}" class="custom-red-btn">Annulla</a>
@@ -49,38 +51,4 @@
         </form>
     </div>
 </div>
-
-<div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.removed|yesno:'1,0' }}">
-    <div class="modal-content">
-        <p>Esperimento rimosso con successo.</p>
-        <button id="modalHomeBtn">Vai alla lista</button>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Dinamically update models when brand changes
-    const brandSelect = document.getElementById('id_brand');
-    const modelSelect = document.getElementById('id_model');
-    
-    brandSelect.addEventListener('change', function() {
-        const brand = this.value;
-        if (brand) {
-            fetch(`/experiments/get-models/?brand=${encodeURIComponent(brand)}`)
-                .then(response => response.json())
-                .then(data => {
-                    modelSelect.innerHTML = '<option value="">---</option>';
-                    data.models.forEach(model => {
-                        const option = document.createElement('option');
-                        option.value = model;
-                        option.textContent = model;
-                        modelSelect.appendChild(option);
-                    });
-                });
-        } else {
-            modelSelect.innerHTML = '<option value="">---</option>';
-        }
-    });
-});
-</script>
 {% endblock %}

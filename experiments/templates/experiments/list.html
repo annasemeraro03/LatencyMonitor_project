@@ -23,44 +23,53 @@
         <h2 class="text-2xl font-bold mb-3">Gestione esperimenti</h2>
         <br>
         <h3>Operazioni disponibili</h3>
+        <br>
         {% if user.is_authenticated %}
             <div class="flex flex-row items-center" style="gap: 12px;"> <!-- FORZO il gap orizzontale -->
                 <!-- Pulsante Device -->
-                <form action="{% url 'experiments:create_device' %}" method="GET" style="display: inline-block; margin: 0;">
+                <form action="{% url 'experiments:create_device' %}" method="GET" style="display: inline-block; margin: 5px;">
                     <button type="submit"
                             title="Aggiungi dispositivo"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <span>Aggiungi dispositivo</span>
                         <i class="uil uil-mobile-android"></i>
-                        <span>+</span>
                     </button>
                 </form>
-                
                 <!-- Pulsante Esperimento -->
-                <form action="{% url 'experiments:create_experiment' %}" method="GET" style="display: inline-block; margin: 0;">
+                <form action="{% url 'experiments:create_experiment' %}" method="GET" style="display: inline-block; margin: 5px;">
                     <button type="submit"
                             title="Aggiungi esperimento"     
                             class="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <span>Aggiungi esperimento</span>
                         <i class="uil uil-upload"></i>
-                        <span>+</span>
                     </button>
                 </form>
 
-                <form action="{% url 'experiments:remove_experiment' %}" method="POST" style="display: inline-block; margin: 0;">
+                <form action="{% url 'experiments:remove_experiment' %}" method="POST" style="display: inline-block; margin: 5px;">
                     {% csrf_token %}
                     <button type="submit"
                             title="Rimuovi esperimento"
                             class="bg-red-600 hover:bg-red-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <span>Rimuovi esperimento</span>
                         <i class="uil uil-chart"></i>
-                        <span>-</span>
                     </button>
                 </form>
-                <form action="{% url 'experiments:edit_notes' %}" method="POST" style="display: inline-block; margin: 0;">
+
+                <form action="{% url 'experiments:edit_notes' %}" method="POST" style="display: inline-block; margin: 5px;">
                     {% csrf_token %}
                     <button type="submit"
                             title="Modifica note"
                             class="bg-red-600 hover:bg-red-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <span>Aggiungi nota</span>
                         <i class="uil uil-notes"></i>
-                        <span>-</span>
+                    </button>
+                </form>
+                <form action="{% url 'experiments:experiment_search' %}" method="GET" style="display: inline-block; margin: 5px;">
+                    <button type="submit"
+                        title="Cerca esperimenti"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+                        <span>Cerca esperimenti</span>
+                        <i class="uil uil-search"></i>
                     </button>
                 </form>
             </div>

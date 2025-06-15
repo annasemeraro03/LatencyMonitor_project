@@ -142,6 +142,9 @@ class LatencyDataForm(forms.ModelForm):
         model = LatencyData
         fields = ['index', 'value', 'timestamp']
 
+from django import forms
+from .models import Experiment, Device
+
 class ExperimentRemoveForm(forms.Form):
     brand = forms.ChoiceField(
         choices=[],
@@ -158,11 +161,30 @@ class ExperimentRemoveForm(forms.Form):
         required=True,
         label="Modalità"
     )
+    experiment = forms.ModelChoiceField(
+        queryset=Experiment.objects.none(),
+        required=False,
+        label="Esperimento (opzionale)"
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['brand'].choices = self.get_brand_choices()
         self.fields['model'].choices = self.get_model_choices()
+        data = self.data or self.initial
+
+        selected_brand = data.get('brand')
+        selected_model = data.get('model')
+        selected_mode = data.get('mode')
+
+        if selected_brand and selected_model and selected_mode:
+            self.fields['experiment'].queryset = Experiment.objects.filter(
+                device__brand=selected_brand,
+                device__model=selected_model,
+                mode=selected_mode
+            )
+        else:
+            self.fields['experiment'].queryset = Experiment.objects.none()
 
     def get_brand_choices(self):
         brands = Device.objects.values_list('brand', flat=True).distinct()
@@ -173,15 +195,18 @@ class ExperimentRemoveForm(forms.Form):
         return [('', '---')] + [(m, m) for m in models]
 
     def get_selected_experiments(self):
-        # Aggiungi debug per verificare i valori selezionati
-        print(f"Brand selezionato: {self.cleaned_data['brand']}")
-        print(f"Model selezionato: {self.cleaned_data['model']}")
-        print(f"Mode selezionato: {self.cleaned_data['mode']}")
-        
+        # Se è stato scelto un esperimento singolo, restituiscilo in queryset singolo
+        experiment = self.cleaned_data.get('experiment')
+        if experiment:
+            return Experiment.objects.filter(pk=experiment.pk)
+        # Altrimenti filtro per brand, model e mode
+        brand = self.cleaned_data.get('brand')
+        model = self.cleaned_data.get('model')
+        mode = self.cleaned_data.get('mode')
         return Experiment.objects.filter(
-            device__brand=self.cleaned_data['brand'],
-            device__model=self.cleaned_data['model'],
-            mode=self.cleaned_data['mode']
+            device__brand=brand,
+            device__model=model,
+            mode=mode
         )
         
 class EditNotesForm(forms.Form):

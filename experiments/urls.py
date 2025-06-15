@@ -6,7 +6,8 @@ from .views import (
     ExperimentCreateView,
     DeviceCreateView,
     ExperimentRemoveView,
-    EditNotesView
+    EditNotesView,
+    SearchExperimentsView
 )
 
 app_name = 'experiments'
@@ -20,4 +21,7 @@ urlpatterns = [
     path('remove/', ExperimentRemoveView.as_view(), name='remove_experiment'),
     path('edit_notes/', EditNotesView.as_view(), name='edit_notes'),
     path('get-experiments/', views.get_experiments_by_device, name='get_experiments'),
+    path("get-experiment-notes/", views.get_experiment_notes, name="get_experiment_notes"),
+    path('search/', SearchExperimentsView.as_view(), name='experiment_search'),
+    path('experiment/<int:pk>/', views.experiment_detail, name='experiment_detail')
 ]

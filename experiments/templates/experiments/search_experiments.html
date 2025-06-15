@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'experiments/css/experiments_table.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <h2 class="text-2xl font-bold mb-4">Ricerca esperimenti</h2>
+    <br>
+    <form method="get" class="flex flex-col gap-4 mb-6">
+        {% csrf_token %}
+        <div>
+            <label for="field" class="font-semibold" style="color: var(--text-color)">Filtro:</label>
+            <select name="field" id="field" onchange="this.form.submit()" class="ml-2 p-2 rounded border">
+                <option value="">-- Seleziona un campo --</option>
+                <option value="brand" {% if selected_field == 'brand' %}selected{% endif %}>Brand</option>
+                <option value="model" {% if selected_field == 'model' %}selected{% endif %}>Modello</option>
+                <option value="mode" {% if selected_field == 'mode' %}selected{% endif %}>Modalità</option>
+                <option value="date" {% if selected_field == 'date' %}selected{% endif %}>Data</option>
+            </select>
+        </div>
+
+        {% if selected_field %}
+        <div>
+            <br>
+            <label for="value" class="font-semibold" style="color: var(--text-color)">
+                Campo da filtrare:  
+            </label>
+
+            {% if selected_field == 'date' %}
+                <input type="date" name="value" id="value" value="{{ selected_value }}" class="ml-2 p-2 rounded border">
+            {% else %}
+                <select name="value" id="value" class="ml-2 p-2 rounded border" onchange="this.form.submit()">
+                    {% if selected_field == 'brand' %}
+                        {% for item in brands %}
+                            <option value="{{ item }}" {% if selected_value == item %}selected{% endif %}>{{ item }}</option>
+                        {% endfor %}
+                    {% elif selected_field == 'model' %}
+                        {% for item in models %}
+                            <option value="{{ item }}" {% if selected_value == item %}selected{% endif %}>{{ item }}</option>
+                        {% endfor %}
+                    {% elif selected_field == 'mode' %}
+                        {% for item in modes %}
+                            <option value="{{ item }}" {% if selected_value == item %}selected{% endif %}>{{ item }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            {% endif %}
+            <br><br>
+        </div>
+        {% endif %}
+    </form>
+
+    {% if experiments %}
+        <h3 class="text-xl font-semibold mb-3">Risultati:</h3>
+        <div class="overflow-x-auto">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th>Dispositivo</th>
+                        <th>Modalità</th>
+                        <th>Stato</th>
+                        <th>Note</th>
+                        <th>Creato il</th>
+                        <th>Ultima modifica</th>
+                        <th>Dettagli</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exp in experiments %}
+                    <tr class="border-t">
+                        <td>{{ exp.device.brand }} {{ exp.device.model }}</td>
+                        <td>{{ exp.get_mode_display }}</td>
+                        <td>
+                            {% if exp.is_closed %}
+                                <span class="text-red-600 font-medium">Chiuso</span>
+                            {% else %}
+                                <span class="text-green-600 font-medium">Aperto</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ exp.notes|truncatechars:50 }}
+                        </td>
+                        <td>{{ exp.created_at|date:"d/m/Y H:i" }}</td>
+                        <td>{{ exp.last_modified_at|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <a href="{% url 'experiments:experiment_detail' exp.id %}" class="text-blue-600 hover:underline">Dettagli</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% elif selected_value %}
+        <p>Nessun esperimento trovato per i criteri selezionati.</p>
+    {% endif %}
+</div>
+{% endblock %}
