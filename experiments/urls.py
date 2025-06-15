@@ -6,6 +6,7 @@ from .views import (
     ExperimentCreateView,
     DeviceCreateView,
     ExperimentRemoveView,
+    EditNotesView
 )
 
 app_name = 'experiments'
@@ -17,4 +18,6 @@ urlpatterns = [
     path('create_experiment/', ExperimentCreateView.as_view(), name='create_experiment'),
     path('get-models/', views.get_models, name='get-models'),
     path('remove/', ExperimentRemoveView.as_view(), name='remove_experiment'),
+    path('edit_notes/', EditNotesView.as_view(), name='edit_notes'),
+    path('get-experiments/', views.get_experiments_by_device, name='get_experiments'),
 ]

@@ -183,3 +183,34 @@ class ExperimentRemoveForm(forms.Form):
             device__model=self.cleaned_data['model'],
             mode=self.cleaned_data['mode']
         )
+        
+class EditNotesForm(forms.Form):
+    brand = forms.ChoiceField(choices=[], required=True)
+    model = forms.ChoiceField(choices=[], required=True)
+    experiment = forms.ModelChoiceField(queryset=Experiment.objects.none(), required=True, label="Esperimento")
+    notes = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False, label="Note")
+
+    def __init__(self, *args, **kwargs):
+        super(EditNotesForm, self).__init__(*args, **kwargs)
+
+        # Popola i brand unici
+        brands = Device.objects.values_list('brand', flat=True).distinct()
+        self.fields['brand'].choices = [('', '--- Seleziona ---')] + [(b, b) for b in brands]
+
+        data = self.data or self.initial
+        selected_brand = data.get('brand')
+        selected_model = data.get('model')
+
+        # Popola i modelli se è stato selezionato un brand
+        if selected_brand:
+            models = Device.objects.filter(brand=selected_brand).values_list('model', flat=True).distinct()
+            self.fields['model'].choices = [('', '--- Seleziona ---')] + [(m, m) for m in models]
+        else:
+            self.fields['model'].choices = [('', '--- Seleziona un brand prima ---')]
+
+        # Popola esperimenti se brand e modello sono stati selezionati
+        if selected_brand and selected_model:
+            self.fields['experiment'].queryset = Experiment.objects.filter(
+                device__brand=selected_brand,
+                device__model=selected_model
+            )

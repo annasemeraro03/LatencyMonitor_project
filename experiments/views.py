@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.shortcuts import render
+from .forms import EditNotesForm
 
 @login_required
 def get_models(request):
@@ -69,3 +70,30 @@ class ExperimentRemoveView(LoginRequiredMixin, FormView):
             experiments.delete()
         
         return redirect(f"{self.request.path}?removed=1")
+    
+class EditNotesView(LoginRequiredMixin, FormView):
+    template_name = 'experiments/edit_notes.html'
+    form_class = EditNotesForm
+    success_url = reverse_lazy('experiments:edit_notes')
+
+    def form_valid(self, form):
+        experiment = form.cleaned_data['experiment']
+        notes = form.cleaned_data['notes']
+        experiment.notes = notes
+        experiment.save()
+        messages.success(self.request, "Note aggiornate correttamente.")
+        return redirect(self.success_url)
+
+@login_required
+def get_experiments_by_device(request):
+    brand = request.GET.get('brand')
+    model = request.GET.get('model')
+    experiments = Experiment.objects.filter(
+        device__brand=brand,
+        device__model=model
+    )
+    data = [
+        {"id": exp.id, "label": f"{exp.get_mode_display()} - {exp.created_at.date()} (ID:{exp.id})"}
+        for exp in experiments
+    ]
+    return JsonResponse({'experiments': data})
