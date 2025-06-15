@@ -16,7 +16,7 @@ class Issue(models.Model):
     device = models.ForeignKey('experiments.Device', on_delete=models.CASCADE, null=True, blank=True)
     experiment = models.ForeignKey('experiments.Experiment', on_delete=models.CASCADE, null=True, blank=True)
     is_resolved = models.BooleanField(default=False)
-    resolved_at = models.DateTimeField(null=True, blank=True)
+    resolved_at = models.DateField(null=True, blank=True)
     
     def __str__(self):
         return self.title

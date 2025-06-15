@@ -108,7 +108,7 @@ class ResolveIssueView(LoginRequiredMixin, View):
             return HttpResponseBadRequest("Campo 'resolved' mancante o non valido")
 
         issue.is_resolved = data['resolved']
-        issue.resolved_at = timezone.now().date()
+        issue.resolved_at = timezone.now()
         issue.save()
 
         return JsonResponse({'success': True, 'resolved': issue.is_resolved})

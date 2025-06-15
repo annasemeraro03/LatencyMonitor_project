@@ -16,7 +16,7 @@
         </button>
     </form>
 
-    <br><br>
+    <br><br><br>
 
     <section class="approval-header">
         {% if request.user.is_superuser %}
@@ -123,4 +123,7 @@
         </div>
     </div>
 </div>
+<script>
+  const csrftoken = '{{ csrf_token }}';
+</script>
 {% endblock %}

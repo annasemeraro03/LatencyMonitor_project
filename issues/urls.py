@@ -11,5 +11,5 @@ urlpatterns = [
     path('create/', views.CreateIssueView.as_view(), name='create_issue'),
     path('get-models/', views.get_models, name='get_models'),
     path('get-experiments/', views.get_experiments, name='get_experiments'),
-    path('resolve/<int:issue_id>/', views.ResolveIssueView.as_view(), name='resolve_issue'),
+    path('<int:issue_id>/resolve/', views.ResolveIssueView.as_view(), name='resolve_issue'),
 ]
