@@ -11,25 +11,21 @@ class LoginStatsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         today = now().date()
         three_days_ago = today - timedelta(days=3)
 
-        # Totale login di oggi
         total_today = (
             LoginRecord.objects
             .filter(timestamp__date=today)
             .count()
         )
 
-        # Login totali oggi senza admin (escludendo utenti admin)
         total_today_no_admin = LoginRecord.objects.filter(
             timestamp__date=today
         ).exclude(
             user__is_superuser=True
         ).count()
 
-        # Login degli ultimi 3 giorni, giorno per giorno
         login_data = (
             LoginRecord.objects
             .filter(timestamp__date__gte=three_days_ago)
@@ -39,10 +35,9 @@ class LoginStatsView(LoginRequiredMixin, TemplateView):
             .order_by('-day')
         )
 
-        # ✅ Aggiunta: numero di issue risolte oggi
         resolved_today = Issue.objects.filter(
             is_resolved=True,
-            resolved_at__date=today
+            resolved_at=today
         ).count()
 
         context['total_today'] = total_today
