@@ -75,7 +75,21 @@ body {
     padding: 2rem;
 }
 
+h1 {
+    color: var(--h2-color);
+    margin-bottom: 2px !important;
+}
+
 h2 {
     color: var(--h2-color);
     margin-bottom: 2px !important;
+}
+
+h3 {
+    color: var(--h2-color);
+    margin-bottom: 2px !important;
+}
+
+label {
+    color: var(--text-color);
 }
