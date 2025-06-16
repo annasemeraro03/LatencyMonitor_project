@@ -29,13 +29,25 @@ Before starting the project, please do this:
 >> ./setup.sh
 ```
 
-or 
+or this:
 
 ```bash
 >> bash setup.sh
 ```
 
-The script above installs the dependencies and starts a virtual environment.
+This script installs the necessary dependencies and activates the virtual environment.
+
+If you also want to install the system libraries required for WeasyPrint, run the script with the -d flag:
+
+```bash
+>> ./setup.sh -d
+```
+
+or
+
+```bash
+>> bash setup.sh -d
+```
 
 ## Usage
 
@@ -45,7 +57,7 @@ To start the django server, do this:
 >> ./start.sh
 ```
 
-or 
+or this:
 
 ```bash
 >> bash start.sh
