@@ -2,6 +2,7 @@
 
 # CONFIGURATIONS
 APPS="users issues experiments dashboard core analytics"
+REMOVE_ALL_MIGRATIONS=false
 
 # cleanup function
 cleanup() {
@@ -13,10 +14,20 @@ cleanup() {
 # Trap SIGINT (CTRL+C) and call cleanup
 trap cleanup SIGINT
 
-# remove old migrations and database (opzionale)
-# rm -f db.sqlite3
-# find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-# find . -path "*/migrations/*.pyc" -delete
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -r|--remove) REMOVE_ALL_MIGRATIONS=true ;;
+        *) echo -e "\033[1;32m>> Ignored unrecognized argument: $1\033[0m" ;;
+    esac
+    shift
+done
+
+# remove old migrations and database 
+if [ "$REMOVE_ALL_MIGRATIONS" = true ]; then
+    rm -f db.sqlite3
+    find . -path "*/migrations/*.py" -not -name "__init__.py" -deleteù
+    find . -path "*/migrations/*.pyc" -delete
+fi
 
 # MIGRATIONS
 python manage.py makemigrations $APPS       # migrations
