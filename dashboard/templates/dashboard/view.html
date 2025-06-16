@@ -2,36 +2,81 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'dashboard/css/device_table.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/charts.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="{% static 'dashboard/js/charts.js' %}"></script> 
 {% endblock %}
 {% block content %}
 <div class="max-w-screen-xl mx-auto px-4 py-8">
-
-    <!-- Titolo principale -->
     <section class="mb-10">
         <h2 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white">Dispositivi Monitorati</h2>
     </section>
-
-    <!-- Sezione Grafici -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-        <!-- Grafico a torta -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h3 class="text-xl font-semibold mb-4">Distribuzione per Brand</h3>
-            <div style="height: 350px;">
-                <canvas id="brandPieChart"></canvas>
+    <div class="grid grid-cols-2 gap-8 mb-12">
+        <div class="flex flex-row items-center">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold mb-4">Distribuzione per brand</h3>
+                <div style="height: 350px;">
+                    <canvas id="brandPieChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold mb-4">Distribuzione esperimenti per dispositivo</h3>
+                <div style="height: 350px;">
+                    <canvas id="experimentPieChart"></canvas>
+                </div>
             </div>
         </div>
-
-        <!-- Placeholder per altri grafici (es. temporali) -->
+        <br>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h3 class="text-xl font-semibold mb-4">Grafico Temporale</h3>
-            <div style="height: 350px;">
-                <canvas id="timeChart"></canvas>  <!-- Aggiungi i dati nel JS -->
+            <h3 class="text-xl font-semibold mb-4">Comparazione modalità foto tra dispositivi</h3>
+
+            <div class="chart-wrapper">
+                <div class="chart-left">
+                    <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                        <canvas id="comparisonChartPhoto"></canvas>
+                    </div>
+                </div>
+
+                <!-- Destra: Checkbox -->
+                <div class="chart-right">
+                    <h4 class="mb-2 font-semibold text-gray-800 dark:text-gray-200">Seleziona dispositivi</h4>
+                    <div class="checkbox-container flex flex-wrap gap-4">
+                        {% for device in devices_photo %}
+                            <label class="text-gray-800 dark:text-gray-200 flex items-center space-x-1 whitespace-nowrap">
+                                <input type="checkbox" class="device-photo-checkbox" value="{{ device.id }}">
+                                <span>{{ device.brand }} {{ device.model }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>       
+            </div>
+        </div>
+        <br>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Comparazione modalità video tra dispositivi</h3>
+
+            <div class="chart-wrapper">
+                <div class="chart-left">
+                    <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                        <canvas id="comparisonChartVideo"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-right">
+                    <h4 class="mb-2 font-semibold text-gray-800 dark:text-gray-200">Seleziona dispositivi</h4>
+                    <div class="checkbox-container flex flex-wrap gap-4">
+                        {% for device in devices_video %}
+                            <label class="text-gray-800 dark:text-gray-200 flex items-center space-x-1 whitespace-nowrap">
+                                <input type="checkbox" class="device-video-checkbox" value="{{ device.id }}">
+                                <span>{{ device.brand }} {{ device.model }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>       
             </div>
         </div>
     </div>
-
-    <!-- Tabella dei dispositivi -->
+    <br>
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h3 class="text-xl font-semibold mb-6">Elenco Dispositivi</h3>
         <div class="overflow-x-auto">
@@ -63,19 +108,70 @@
     </div>
 </div>
 
-<!-- Script per i grafici -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof renderBrandPieChart === 'function') {
-            const labels = JSON.parse('{{ brand_labels|escapejs }}');
-            const counts = JSON.parse('{{ brand_counts|escapejs }}');
-            renderBrandPieChart(labels, counts);
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    if (typeof renderBrandPieChart === 'function') {
+        const labels = JSON.parse('{{ brand_labels|escapejs }}');
+        const counts = JSON.parse('{{ brand_counts|escapejs }}');
+        renderBrandPieChart(labels, counts);
+    }
 
-        // Esempio: se vuoi gestire anche un grafico temporale
-        if (typeof renderTimeChart === 'function' && window.timeChartData) {
-            renderTimeChart(window.timeChartData);
-        }
+    const photoComparisonData = JSON.parse('{{ photo_comparison_data|escapejs }}');
+    const videoComparisonData = JSON.parse('{{ video_comparison_data|escapejs }}');
+    
+    function updatePhotoChart(selectedDeviceIds) {
+        const datasets = selectedDeviceIds.map(id => ({
+            label: photoComparisonData[id]?.label || '',
+            data: photoComparisonData[id]?.latencies || [],
+            fill: false,
+            borderWidth: 2,
+            tension: 0.3,
+            borderColor: randomColor(id)
+        }));
+        renderComparisonChartPhoto(datasets);
+    }
+
+    function updateVideoChart(selectedDeviceIds) {
+        const datasets = selectedDeviceIds.map(id => ({
+            label: videoComparisonData[id]?.label || '',
+            data: videoComparisonData[id]?.latencies || [],
+            fill: false,
+            borderWidth: 2,
+            tension: 0.3,
+            borderColor: randomColor(id)
+        }));
+        renderComparisonChartVideo(datasets);
+    }
+
+    function randomColor(seed) {
+        const colors = [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ];
+        return colors[parseInt(seed) % colors.length];
+    }
+
+    const photoCheckboxes = document.querySelectorAll('.device-photo-checkbox');
+    photoCheckboxes.forEach(chk => {
+        chk.addEventListener('change', () => {
+            const selected = Array.from(photoCheckboxes).filter(c => c.checked).map(c => c.value);
+            updatePhotoChart(selected);
+        });
     });
+
+    const videoCheckboxes = document.querySelectorAll('.device-video-checkbox');
+    videoCheckboxes.forEach(chk => {
+        chk.addEventListener('change', () => {
+            const selected = Array.from(videoCheckboxes).filter(c => c.checked).map(c => c.value);
+            updateVideoChart(selected);
+        });
+    });
+
+    updatePhotoChart([]);
+    updateVideoChart([]);});
 </script>
 {% endblock %}

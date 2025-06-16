@@ -16,7 +16,6 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Conteggio dispositivi per brand
         brand_data = (
             Device.objects
             .values('brand')
@@ -27,13 +26,43 @@ class DashboardView(TemplateView):
         brand_labels = [entry['brand'] for entry in brand_data]
         brand_counts = [entry['count'] for entry in brand_data]
 
+        devices = Device.objects.all().order_by('brand', 'model')
+
+        # Dati per confronto foto
+        photo_devices = Device.objects.filter(experiments__mode="photo").distinct()
+        photo_comparison_data = {}
+        for device in photo_devices:
+            last_exp = Experiment.objects.filter(device=device, mode="photo").order_by('-created_at').first()
+            if last_exp:
+                latencies = LatencyData.objects.filter(experiment=last_exp).order_by('index')
+                photo_comparison_data[str(device.id)] = {
+                    'label': f"{device.brand} {device.model}",
+                    'latencies': [ld.value for ld in latencies],
+                }
+
+        # Dati per confronto video
+        video_devices = Device.objects.filter(experiments__mode="video").distinct()
+        video_comparison_data = {}
+        for device in video_devices:
+            last_exp = Experiment.objects.filter(device=device, mode="video").order_by('-created_at').first()
+            if last_exp:
+                latencies = LatencyData.objects.filter(experiment=last_exp).order_by('index')
+                video_comparison_data[str(device.id)] = {
+                    'label': f"{device.brand} {device.model}",
+                    'latencies': [ld.value for ld in latencies],
+                }
+
         context.update({
-            'devices': Device.objects.all(),
+            'devices': devices,
+            'devices_photo': photo_devices,
+            'devices_video': video_devices,
             'brand_labels': json.dumps(brand_labels),
             'brand_counts': json.dumps(brand_counts),
+            'photo_comparison_data': json.dumps(photo_comparison_data),
+            'video_comparison_data': json.dumps(video_comparison_data),
         })
-        return context
 
+        return context
 
 class DeviceDetailView(DetailView):
     model = Device
@@ -60,7 +89,6 @@ class DeviceDetailView(DetailView):
             'chart_data': chart_data,
         })
         return context
-
 
 class DevicePrintView(DetailView):
     model = Device

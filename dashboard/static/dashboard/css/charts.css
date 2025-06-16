@@ -1,0 +1,32 @@
+.chart-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.chart-left {
+  flex: 1 1 60%;
+  min-width: 300px;
+}
+
+.chart-right {
+  flex: 1 1 35%;
+  min-width: 200px;
+  padding: 10px;
+  background-color: var(--box3-color);
+  border-radius: 0px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Questo fa sì che le label siano inline-flex (riga) e non block (verticale) */
+.chart-right .checkbox-container label {
+  display: inline-flex;       /* Inline flex per farli stare uno accanto all'altro */
+  align-items: center;
+  margin-bottom: 5px;         /* piccolo margine verticale tra righe se wrap */
+  font-size: 1rem;
+  white-space: nowrap;        /* Evita che il testo vada a capo */
+  cursor: pointer;            /* cambia cursore al passaggio */
+}
