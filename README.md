@@ -29,24 +29,12 @@ Before starting the project, please do this:
 >> ./setup.sh
 ```
 
-or this:
-
-```bash
->> bash setup.sh
-```
-
 This script installs the necessary dependencies and activates the virtual environment.
 
-If you also want to install the system libraries required for WeasyPrint, run the script with the -d flag:
+If you also want to install the system libraries required for WeasyPrint, run the script with the _-d_ flag:
 
 ```bash
 >> ./setup.sh -d
-```
-
-or
-
-```bash
->> bash setup.sh -d
 ```
 
 ## Usage
@@ -57,16 +45,16 @@ To start the django server, do this:
 >> ./start.sh
 ```
 
-or this:
-
-```bash
->> bash start.sh
-```
-
 This script will: 
 1. make migrations
 2. start an MQTT listener in background (for the home page)
 3. start django server
+
+In addiction, the script can be runned with _-r_ flag to remove old migrations and the database:
+
+```bash
+>> ./start.sh -r
+```
 
 ## License
 
@@ -78,10 +66,4 @@ There are several tests (of views and functions) in this project. To execute all
 
 ```bash
 >> ./tests.sh
-```
-
-or
-
-```bash
->> bash tests.sh
 ```
