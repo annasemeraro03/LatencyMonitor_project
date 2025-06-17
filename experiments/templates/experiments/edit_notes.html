@@ -3,8 +3,9 @@
 {% block head %}
     <script defer src="{% static 'experiments/js/edit_notes.js' %}"></script>
     <script defer src="{% static 'experiments/js/modal.js' %}"></script>
+    <script defer src="{% static 'experiments/js/forms.js' %}"></script>
     <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
-    <link rel="stylesheet" href="{% static 'experiments/css/modal.css' %}">
+    <link rel="stylesheet" href="{% static 'experiments/css/model.css' %}">
 {% endblock %}
 {% block content %}
 <div class="form-wrapper">
@@ -13,13 +14,16 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                {{ form.brand.label_tag }} {{ form.brand }}
+                <label>{{ form.brand.label_tag }}<span class="required">*</span></label>
+                {{ form.brand }}
             </div>
             <div class="form-group">
-                {{ form.model.label_tag }} {{ form.model }}
+                <label>{{ form.model.label_tag }}<span class="required">*</span></label>
+                {{ form.model }}
             </div>
             <div class="form-group">
-                {{ form.experiment.label_tag }} {{ form.experiment }}
+                <label>{{ form.experiment.label_tag }}<span class="required">*</span></label>
+                {{ form.experiment }}
             </div>
             <div class="form-group">
                 {{ form.notes.label_tag }}

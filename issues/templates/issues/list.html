@@ -18,15 +18,14 @@
         <button type="submit"
                 title="Fai una segnalazione"
                 class="bg-red-600 hover:bg-red-700 text-white font-medium rounded-full px-4 py-2 flex items-center gap-1">
+            <span>Crea issue</span>
             <i class="uil uil-chart"></i>
-            <span>+</span>
         </button>
     </form>
 
-    <br><br><br>
-
     <section class="approval-header">
         {% if request.user.is_superuser %}
+            <br>
             <h2>Issues in attesa di revisione</h2>
         {% endif %}
     </section>
@@ -37,8 +36,8 @@
                 {% for issue in pending_issues %}
                 <div class="user-card">
                     <h3>{{ issue.title }}</h3>
-                    <p><strong>Segnalato da:</strong> {{ issue.reported_by.username }}</p>
-                    <p><strong>Data:</strong> {{ issue.created_at }}</p>
+                    <p style="color:black;"><strong>Segnalato da:</strong> {{ issue.reported_by.username }}</p>
+                    <p style="color:black;"><strong>Data:</strong> {{ issue.created_at }}</p>
                     <a href="#" class="details-btn" data-issue-id="{{ issue.id }}">Vedi dettagli</a>
                 </div>
                 {% endfor %}
@@ -53,8 +52,8 @@
                 <span class="close" id="closeIssueModal">&times;</span>
                 <h3>Dettagli issue</h3>
                 <div id="issueModalBody">
-                    <p><strong>Titolo:</strong> <span id="modal-title"></span></p>
-                    <p><strong>Descrizione:</strong> <span id="modal-description"></span></p>
+                    <p style="color: black"><strong>Titolo:</strong> <span id="modal-title"></span></p>
+                    <p style="color: black"><strong>Descrizione:</strong> <span id="modal-description"></span></p>
                     <input type="hidden" id="modal-issue-id" value="">
                 </div>
                 <div class="modal-actions">
@@ -73,18 +72,20 @@
         {% if issues %}
             {% for issue in issues %}
             <div class="user-card">
-                <h3>{{ issue.title }}</h3>
-                <p><strong>Data:</strong> {{ issue.created_at }}</p>
-                <p><strong>Stato:</strong>
+                <h3 style="color:black;">{{ issue.title }}</h3>
+                <p style="color: black"><strong>Data:</strong> {{ issue.created_at }}</p>
+                <p style="color: black"><strong>Stato:</strong>
                     {% if issue.status == 'pending' %}
                         <span style="color: orange;">In attesa</span>
+                    {% elif issue.status == 'approved' and issue.is_resolved %}
+                        <span style="color: green;">Risolta!!!</span>
                     {% elif issue.status == 'approved' %}
-                        <span style="color: green;">Approvata</span>
+                        <span style="color: green;">Approvata</span>{% elif issue.status == 'approved' %}
                     {% else %}
                         <span style="color: red;">Rifiutata</span>
                     {% endif %}
                 </p>
-                <p><strong>Descrizione:</strong> {{ issue.description }}</p>
+                <p style="color:black;"><strong>Descrizione:</strong> {{ issue.description }}</p>
             </div>
             {% endfor %}
         {% else %}
@@ -100,10 +101,10 @@
         {% if approved_open_issues %}
             {% for issue in approved_open_issues %}
             <div class="user-card" data-issue-id="{{ issue.id }}">
-                <h3 class="issue-title">{{ issue.title }}</h3>
-                <p class="issue-reported-by"><strong>Segnalato da:</strong> {{ issue.reported_by.username }}</p>
-                <p class="issue-description"><strong>Descrizione:</strong> {{ issue.description }}</p>
-                <p class="issue-experiment"><strong>Esperimento:</strong> {{ issue.experiment }}</p>
+                <h1 class="issue-title" style="color: black">{{ issue.title }}</h1>
+                <p class="issue-reported-by" style="color: black;"><strong>Segnalato da:</strong> {{ issue.reported_by.username }}</p>
+                <p class="issue-description" style="color: black;"><strong>Descrizione:</strong> {{ issue.description }}</p>
+                <p class="issue-experiment" style="color: black;"><strong>Esperimento:</strong> {{ issue.experiment }}</p>
                 <a href="#" class="details-btn" data-issue-id="{{ issue.id }}" role="button">Vedi dettagli</a>
             </div>
             {% endfor %}
@@ -115,12 +116,12 @@
     <div id="approvedIssueModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" id="closeApprovedIssueModal">&times;</span>
-            <h3>Dettagli Issue Approvata</h3>
+            <h3 style="color:black;">Dettagli Issue Approvata</h3>
             <div id="approvedIssueModalBody">
-                <p><strong>Titolo:</strong> <span id="approved-modal-title"></span></p>
-                <p><strong>Descrizione:</strong> <span id="approved-modal-description"></span></p>
-                <p><strong>Esperimento:</strong> <span id="approved-modal-experiment"></span></p>
-                <p><strong>Stato risoluzione:</strong> <span id="approved-modal-resolved"></span></p>
+                <p style="color:black;"><strong>Titolo:</strong> <span id="approved-modal-title"></span></p>
+                <p style="color:black;"><strong>Descrizione:</strong> <span id="approved-modal-description"></span></p>
+                <p style="color:black;"><strong>Esperimento:</strong> <span id="approved-modal-experiment"></span></p>
+                <p style="color:black;"><strong>Stato risoluzione:</strong> <span id="approved-modal-resolved"></span></p>
                 <input type="hidden" id="approved-modal-issue-id" value="">
             </div>
             <div class="modal-actions">

@@ -2,7 +2,7 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
-    <link rel="stylesheet" href="{% static 'experiments/css/modal.css' %}">
+    <link rel="stylesheet" href="{% static 'experiments/css/model.css' %}">
     <script defer src="{% static 'experiments/js/modal.js' %}"></script> 
     <script defer src="{% static 'experiments/js/create_experiment.js' %}"></script> 
 
@@ -52,16 +52,14 @@
 
             <!-- File -->
             <div class="form-group">
-                <label for="{{ form.data_file.id_for_label }}">Carica file (.csv)</label>
+                <label for="{{ form.data_file.id_for_label }}">Carica file (.csv)<span class="required">*</span></label>
                 {{ form.data_file }}
                 {% if form.data_file.errors %}
                     <p class="error">{{ form.data_file.errors.0 }}</p>
                 {% endif %}
             </div>
 
-            <div class="submit-container">
-                <button type="submit">Crea Esperimento</button>
-            </div>
+            <button type="submit" class="btn btn-primary mt-3">Invia</button>
         </form>
     </div>
 </div>

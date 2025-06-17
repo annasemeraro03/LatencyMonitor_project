@@ -7,39 +7,44 @@
   <link rel="stylesheet" href="{% static 'issues/css/form.css' %}">
 {% endblock %}
 {% block content %}
-<h2>Nuova segnalazione</h2>
+<div class="form-wrapper">
+  <div class="form-card">
+    <h2 style="color: #0E4BF1">Nuova segnalazione</h2>
+    <br>
 
-<form method="post">
-  {% csrf_token %}
+    <form method="post">
+      {% csrf_token %}
 
-  <div class="form-group">
-    <label for="id_title">Titolo</label>
-    {{ form.title }}
+      <div class="form-group">
+        <label for="id_title" style="color: black;">Titolo<span class="required">*</span></label>
+        {{ form.title }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_description" style="color: black;">Descrizione<span class="required">*</span></label>
+        {{ form.description }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_brand" style="color: black;">Brand<span class="required">*</span></label>
+        {{ form.brand }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_model" style="color:black;">Modello<span class="required">*</span></label>
+        {{ form.model }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_experiment" style="color: black;">Esperimento<span class="required">*</span></label>
+        {{ form.experiment }}
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3">Invia</button>
+      <a href="{% url 'issues:list' %}" class="btn btn-secondary mt-3">Annulla</a>
+    </form>
   </div>
-
-  <div class="form-group">
-    <label for="id_description">Descrizione</label>
-    {{ form.description }}
-  </div>
-
-  <div class="form-group">
-    <label for="id_brand">Brand</label>
-    {{ form.brand }}
-  </div>
-
-  <div class="form-group">
-    <label for="id_model">Modello</label>
-    {{ form.model }}
-  </div>
-
-  <div class="form-group">
-    <label for="id_experiment">Esperimento</label>
-    {{ form.experiment }}
-  </div>
-
-  <button type="submit" class="btn btn-primary mt-3">Invia</button>
-  <a href="{% url 'issues:list' %}" class="btn btn-secondary mt-3">Annulla</a>
-</form>
+</div>
 
 <script>
   const urls = {

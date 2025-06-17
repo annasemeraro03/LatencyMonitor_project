@@ -12,7 +12,7 @@ class LoginStatsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = now().date()
-        three_days_ago = today - timedelta(days=3)
+        three_days_ago = today - timedelta(days=2)
 
         total_today = (
             LoginRecord.objects

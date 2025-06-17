@@ -23,6 +23,11 @@
                     <i class="uil uil-exclamation-triangle"></i>
                     <span class="link-name">Segnalazioni</span>
                 </a></li>
+            {% else %}
+                <li><a href="{% url 'experiments:experiment_search' %}">
+                    <i class="uil uil-search"></i>
+                    <span class="link-name">Cerca esperimenti</span>
+                </a></li>
             {% endif %}
             {% if request.user.is_superuser %}
                 <li><a href="{% url 'admin:users_approval' %}">

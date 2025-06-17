@@ -11,19 +11,12 @@
     <section class="mb-10">
         <h2 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white">Dispositivi Monitorati</h2>
     </section>
-    <div class="grid grid-cols-2 gap-8 mb-12">
-        <div class="flex flex-row items-center">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 class="text-xl font-semibold mb-4">Distribuzione per brand</h3>
-                <div style="height: 350px;">
-                    <canvas id="brandPieChart"></canvas>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 class="text-xl font-semibold mb-4">Distribuzione esperimenti per dispositivo</h3>
-                <div style="height: 350px;">
-                    <canvas id="experimentPieChart"></canvas>
-                </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Distribuzione per Brand</h3>
+            <div style="height: 350px;">
+                <canvas id="brandPieChart"></canvas>
             </div>
         </div>
         <br>
@@ -31,6 +24,7 @@
             <h3 class="text-xl font-semibold mb-4">Comparazione modalità foto tra dispositivi</h3>
 
             <div class="chart-wrapper">
+                <!-- Sinistra: Canvas del grafico -->
                 <div class="chart-left">
                     <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
                         <canvas id="comparisonChartPhoto"></canvas>
@@ -76,7 +70,7 @@
             </div>
         </div>
     </div>
-    <br>
+
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h3 class="text-xl font-semibold mb-6">Elenco Dispositivi</h3>
         <div class="overflow-x-auto">

@@ -3,50 +3,49 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'experiments/css/form.css' %}">
     <link rel="stylesheet" href="{% static 'experiments/css/model.css' %}">
+    <script defer src="{% static 'experiments/js/remove_device.js' %}"></script>
     <script defer src="{% static 'experiments/js/modal.js' %}"></script>
 {% endblock %}
+
 {% block content %}
 <div class="form-wrapper">
     <div class="form-card">
-        <h2 class="form-title">Nuovo dispositivo</h2>
+        <h2 class="form-title">Rimuovi Dispositivo</h2>
         <br>
-        {% if message %}
-            <div class="alert alert-warning" style="color: red;">
-                Dispositivo già presente nel database!
-            </div>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
         {% endif %}
-        <br>
-        <form method="post" novalidate>
+        
+        <form method="post" id="removeForm">
             {% csrf_token %}
-
-            <!-- Phone - Brand -->
+            
             <div class="form-group">
                 <label for="{{ form.brand.id_for_label }}" style="color: black;">Marca<span class="required">*</span></label>
                 {{ form.brand }}
-                {% if form.brand.errors %}
-                    <p class="error">{{ form.brand.errors.0 }}</p>
-                {% endif %}
             </div>
 
-            <!-- Phone - Model -->
             <div class="form-group">
                 <label for="{{ form.model.id_for_label }}" style="color: black;">Modello<span class="required">*</span></label>
                 {{ form.model }}
-                {% if form.model.errors %}
-                    <p class="error">{{ form.model.errors.0 }}</p>
-                {% endif %}
             </div>
 
             <div class="submit-container">
-                <button type="submit">Salva Device</button>
+                <button type="submit" class="red-delete-button" onclick="return confirm('Sei sicuro di voler eliminare il device e i suoi esperimenti associati?')">
+                    Rimuovi Device
+                </button>
+                <a href="{% url 'experiments:list' %}" class="custom-red-btn">Annulla</a>
             </div>
         </form>
     </div>
 </div>
 
-<div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.created|yesno:'1,0' }}">
+<div id="confirmModal" class="modal" style="display: none;" data-show="{{ request.GET.removed|yesno:'1,0' }}">
     <div class="modal-content">
-        <p>Device creato con successo.</p>
+        <p>Device eliminato con successo.</p>
         <button id="modalHomeBtn">Torna alla pagina esperimenti</button>
     </div>
 </div>

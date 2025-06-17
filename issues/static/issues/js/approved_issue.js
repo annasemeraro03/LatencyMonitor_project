@@ -68,9 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) {
           alert('Issue segnata come risolta!');
           approvedIssueModal.style.display = 'none';
-          alert('Issue segnata come risolta!');
-          // opzionale: aggiorna la UI per riflettere il cambio di stato
-          location.reload(); // o aggiorna solo la card dinamicamente
+          location.reload(); 
         } else {
           alert('Errore nel segnalare come risolta.');
           console.error(response);}

@@ -17,7 +17,7 @@ class Experiment(models.Model):
         ('video', 'Video Mode'),
     ]
 
-    device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments')
+    device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', null=True, blank=True)
     mode = models.CharField(max_length=20, choices=MODE_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(

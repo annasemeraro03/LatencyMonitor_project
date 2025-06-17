@@ -86,7 +86,7 @@ h2 {
 }
 
 h3 {
-    color: var(--h2-color);
+    color: var(--panel-color);
     margin-bottom: 2px !important;
 }
 

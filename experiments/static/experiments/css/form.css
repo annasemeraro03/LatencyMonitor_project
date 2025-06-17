@@ -81,32 +81,3 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #059669;
 }
-
-form > div {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Etichette */
-form label {
-    min-width: 140px;
-    font-weight: 600;
-}
-
-/* Select e bottoni */
-form select, form button {
-    height: 40px;
-    font-size: 1rem;
-}
-
-/* Margine sotto al form */
-form {
-    margin-bottom: 2rem;
-}
-
-/* Lista risultati */
-ul.list-disc {
-    list-style-position: inside;
-    padding-left: 1rem;
-}

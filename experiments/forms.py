@@ -239,3 +239,21 @@ class EditNotesForm(forms.Form):
                 device__brand=selected_brand,
                 device__model=selected_model
             )
+            
+class DeviceRemoveForm(forms.Form):
+    brand = forms.ChoiceField(choices=[])
+    model = forms.ChoiceField(choices=[])
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        brands = Device.objects.values_list('brand', flat=True).distinct()
+        self.fields['brand'].choices = [('', '---')] + [(b, b) for b in brands]
+
+        # Recupera il brand selezionato, se esiste
+        selected_brand = (self.data.get('brand') or self.initial.get('brand'))
+        if selected_brand:
+            models = Device.objects.filter(brand=selected_brand).values_list('model', flat=True).distinct()
+            self.fields['model'].choices = [('', '---')] + [(m, m) for m in models]
+        else:
+            self.fields['model'].choices = [('', '--- Seleziona marca prima ---')]

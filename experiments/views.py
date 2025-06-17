@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView
 from django.http import JsonResponse
 from .models import Experiment, Device
-from .forms import ExperimentForm, ExperimentRemoveForm, DeviceForm
+from .forms import ExperimentForm, ExperimentRemoveForm, DeviceForm, DeviceRemoveForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -24,6 +24,7 @@ def get_models(request):
 
 @login_required
 def get_experiments_by_device(request):
+    print(request)
     brand = request.GET.get('brand')
     model = request.GET.get('model')
     experiments = Experiment.objects.filter(
@@ -145,16 +146,13 @@ class ExperimentRemoveView(LoginRequiredMixin, FormView):
         experiments = form.get_selected_experiments()
         count = experiments.count()
 
-        if count == 0:
-            messages.warning(self.request, "Nessun esperimento trovato con i criteri selezionati.")
-            return redirect(self.success_url)
-
         experiments.delete()
         if count == 1:
             messages.success(self.request, "Esperimento eliminato correttamente.")
         else:
             messages.success(self.request, f"{count} esperimenti eliminati con successo.")
-        return redirect(self.success_url)    
+        return redirect(f"{self.request.path}?removed=1")    
+    
 class EditNotesView(LoginRequiredMixin, FormView):
     template_name = 'experiments/edit_notes.html'
     form_class = EditNotesForm
@@ -202,3 +200,21 @@ class SearchExperimentsView(ListView):
         context['selected_value'] = self.request.GET.get('value', '')
 
         return context
+
+class DeviceRemoveView(LoginRequiredMixin, FormView):
+    template_name = 'experiments/remove_device.html'
+    form_class = DeviceRemoveForm
+    success_url = reverse_lazy('experiments:list')
+
+    def form_valid(self, form):
+        brand = form.cleaned_data['brand']
+        model = form.cleaned_data['model']
+
+        try:
+            device = Device.objects.get(brand=brand, model=model)
+        except Device.DoesNotExist:
+            messages.warning(self.request, "Il dispositivo selezionato non esiste.")
+            return redirect(f"{self.request.path}?removed=1")
+    
+        device.delete()
+        return redirect(f"{self.request.path}?removed=1")

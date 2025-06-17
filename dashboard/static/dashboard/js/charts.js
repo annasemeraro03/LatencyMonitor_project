@@ -8,7 +8,7 @@ function renderBrandPieChart(brandLabels, brandCounts) {
     if (!ctx) {
         console.warn('Elemento brandPieChart non trovato');
         return;
-    }3
+    }
 
     if (!Array.isArray(brandLabels) || brandLabels.length === 0) {
         brandLabels = ['Nessun dato'];
@@ -212,6 +212,123 @@ function renderComparisonChartVideo(datasets) {
     });
 }
 
+function renderDetailCharts(photodiodeData, latencyData) {
+    const pdCtx = document.getElementById('photodiode-chart')?.getContext('2d');
+    if (pdCtx) {
+        new Chart(pdCtx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Photodiode',
+                    data: photodiodeData,
+                    borderColor: 'rgb(54, 162, 235)',
+                    fill: false,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: { display: true, text: 'Indice' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Valore fotodiodo' }
+                    }
+                }
+            }
+        });
+    }
+
+    const latCtx = document.getElementById('latency-chart')?.getContext('2d');
+    if (latCtx) {
+        new Chart(latCtx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Latency',
+                    data: latencyData,
+                    borderColor: 'rgb(54, 162, 235)',
+                    fill: false,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: { display: true, text: 'Indice' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Latenza' }
+                    }
+                }
+            }
+        });
+    }
+}
+
+function renderExperimentCharts(data) {
+    Object.keys(data).forEach(expId => {
+        const ctx = document.getElementById(`chart-${expId}`)?.getContext('2d');
+        if (!ctx) return;
+
+        const chartInfo = data[expId];
+
+        const formattedData = chartInfo.labels.map((label, index) => ({
+            x: parseFloat(label),
+            y: parseFloat(chartInfo.latency[index])
+        }));
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Latenza',
+                    data: formattedData,
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: { display: true, text: 'Indice' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Latenza (µs)' }
+                    }
+                }
+            }
+        });
+    });
+}
 
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
